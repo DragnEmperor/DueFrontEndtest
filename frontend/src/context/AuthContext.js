@@ -42,7 +42,7 @@ class AuthProvider extends React.PureComponent {
 
     setLogin = (data) => {
       if (data) {
-        localStorage.setItem('token', data.googleId)
+        localStorage.setItem('myDuetoken', data.googleId)
         localStorage.setItem('authDueUser', JSON.stringify(data))
         this.setState({
           token : data.token,
@@ -134,7 +134,7 @@ class AuthProvider extends React.PureComponent {
       });
       localStorage.removeItem("myDuetoken");
       localStorage.removeItem("authDueUser");
-      localStorage.removeItem("profile");
+      localStorage.removeItem("profileDueNITH");
       localStorage.removeItem("accessBackend");
       API.auth().logout()
       history.push("/login");

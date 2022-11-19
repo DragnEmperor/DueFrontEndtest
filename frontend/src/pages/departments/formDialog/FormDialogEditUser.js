@@ -71,9 +71,12 @@ const FormDialogEditUser = props => {
   };
 
   const handleSubmit = e => {
-    const onSuccess = () => {
+    const onSuccess = (msg) => {
       setOpen(false);
-      toast.success("Data succesfully updated");
+      if(msg==="success")
+      toast.success("Department succesfully updated");
+      else
+      toast.error(msg);
     };
     e.preventDefault();
 

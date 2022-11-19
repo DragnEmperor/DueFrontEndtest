@@ -46,7 +46,7 @@ function Login(props) {
       axios.get("http://localhost:5000/auth/login/success", { withCredentials: true })
         .then((response) => {
           console.log(response);
-          localStorage.setItem("profile", JSON.stringify(response.data.user));
+          localStorage.setItem("profileDueNITH", JSON.stringify(response.data.user));
           setProfileValue(response.data.user)
           return response.data.user;
         })
@@ -54,8 +54,8 @@ function Login(props) {
           console.log(err);
         });
       };
-    if(localStorage.getItem("profile")){
-      userProfile=JSON.parse(localStorage.getItem("profile"));
+    if(localStorage.getItem("profileDueNITH")){
+      userProfile=JSON.parse(localStorage.getItem("profileDueNITH"));
       setProfileValue(userProfile)
     }
     

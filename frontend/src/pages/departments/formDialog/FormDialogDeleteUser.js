@@ -31,10 +31,12 @@ const FormDialogDeleteUser = (props) => {
   }
   
   const handleSubmit = (e) => {
-      const onSuccess = () => {
-          props.refresh()
+      const onSuccess = (msg) => {
           setOpen(false);
-          toast.success('Data succesfully deleted');
+          if(msg==="success")
+          toast.success('Department succesfully deleted');
+          else
+          toast.error(msg);
       }
       e.preventDefault();
       console.log(props.dataUser[1])

@@ -20,7 +20,7 @@ export const fetchAll = () => dispatch => {
         .catch(err => console.log(err))
 }
 
-export const Pagination = (page = 1, limit = 5,access, name = "", email = "") => dispatch => {
+export const Pagination = (page = 1, limit = 10,access, name = "", email = "") => dispatch => {
     // API.user().fetchPagination(page, Math.abs(limit), name, email)
     //     .then(res =>{
     //         dispatch({

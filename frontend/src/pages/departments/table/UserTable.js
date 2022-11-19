@@ -17,32 +17,37 @@ const styles = theme => ({
 
 const UserTable = ({ classes, ...props }) => {
     const [page, setPage] = useState(0)
-    const [rowsPerPage, setRowsPerPage] = useState(5)
+    const [rowsPerPage, setRowsPerPage] = useState(100)
 
     useEffect(() => {
-        props.fetchPagination(1, rowsPerPage)
+        props.fetchPagination(1, rowsPerPage,'GodLevel')
     }, [])
 
-    const createDepartment=(data)=>{
+    const createDepartment=(data,toastFunc)=>{
     console.log('receive',data);
      axios.post('http://localhost:5000/department/create',data,{withCredentials:true})
      .then(res=>{
          console.log(res)
+         toastFunc(res.data.message)
          refresh()
         })
         .catch(err=>{
             console.log(err)
         })
+    
     }
 
     const deleteDepartment=(deptName)=>{
     //    code for deleting department  
     }
+    const updateDepartment=(deptName)=>{
+    //    code for updating department  
+    }
 
-    const handleChangePage = async (newPage) => {
-        await setPage(newPage);
-        props.fetchPagination(newPage + 1, rowsPerPage,'GodLevel')
-    };
+    // const handleChangePage = async (newPage) => {
+    //     await setPage(newPage);
+    //     props.fetchPagination(newPage + 1, rowsPerPage,'GodLevel')
+    // };
 
     const handleChangeRowsPerPage = async (rowsPerPage) => {
         await setRowsPerPage(rowsPerPage);
@@ -137,13 +142,14 @@ const UserTable = ({ classes, ...props }) => {
                         <div style={{display:"flex", flexDirection:"row", justifyContent:"flex-end"}}>
                             <FormDialogEditUser
                                 dataUser={tableMeta.rowData}
-                                update={props.update}
+                                update={updateDepartment}
                             />
-                            <FormDialogActivateDeactivateDepartment
+                            {/* code for freeze/unfreeze*/} 
+                            {/* <FormDialogActivateDeactivateDepartment
                                 dataUser={tableMeta.rowData}
                                 // change to activate/deactivate
                                 update={props.update}
-                            />
+                            /> */}
                             <FormDialogDeleteUser 
                                 dataUser={tableMeta.rowData}
                                 delete={deleteDepartment}
@@ -158,23 +164,21 @@ const UserTable = ({ classes, ...props }) => {
 
     const options = {
         filterType: 'textField',
-        responsive: 'stacked',
+        responsive: 'vertical',
         selectableRows: false,
         // rowsPerPageOptions: [5, 10, 25],
         serverSide: true,
         viewColumns: false,
         print: false,
         download: false,
-
-        // rowsPerPage: rowsPerPage,
-        count: props.meta.totalDocs || 0,
+        rowsPerPage: 100,
         page: page,
 
         onTableChange: (action, tableState) => {
             switch (action) {
-              case 'changePage':
-                handleChangePage(tableState.page)
-                break;
+            //   case 'changePage':
+            //     handleChangePage(tableState.page)
+            //     break;
 
             case 'changeRowsPerPage':
                 handleChangeRowsPerPage(tableState.rowsPerPage)

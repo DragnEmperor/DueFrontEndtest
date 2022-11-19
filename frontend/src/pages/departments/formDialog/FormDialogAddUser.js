@@ -67,17 +67,17 @@ const FormDialogAddUser = props => {
   };
 
   const handleSubmit = e => {
-    const onSuccess = () => {
-      props.refresh();
+    const onSuccess = (msg) => {
       setOpen(false);
-      toast.success("Data succesfully updated");
+      if(msg==="success")
+      toast.success("Department succesfully updated");
+      else
+      toast.error(msg);
     };
     e.preventDefault();
-    console.log('submit call1')
 
     if (validate()) {
-      console.log('submit call2')
-      props.create(user,onSuccess());
+      props.create(user,onSuccess);
     }
   };
 

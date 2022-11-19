@@ -16,10 +16,10 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 const FormDialogDeleteUser = (props) => {
   const [open, setOpen] = useState(false);
-  const [userId, setUserId] = useState(null);
+  const [deptName, setDeptName] = useState(null);
 
   useEffect(() => {
-    setUserId(props.dataUser[0])
+    setDeptName(props.dataUser[0])
   }, [props.dataUser])
 
   const handleOpen = () => {
@@ -37,8 +37,8 @@ const FormDialogDeleteUser = (props) => {
           toast.success('Data succesfully deleted');
       }
       e.preventDefault();
-
-      props.delete(userId, onSuccess)
+      console.log(props.dataUser[1])
+      props.delete(deptName, onSuccess)
   }
 
   return (

@@ -105,7 +105,7 @@ const CollapsibleRow = (props) => {
                   native: true,
               }}
               onChangePage={handleChangePage}
-              onChangeRowsPerPage={handleChangeRowsPerPage}
+              onRowsPerPageChange={handleChangeRowsPerPage}
               ActionsComponent={TablePaginationActions}
           />
       </Fragment>

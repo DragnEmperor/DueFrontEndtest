@@ -19,7 +19,7 @@ const FormDialogDeleteUser = (props) => {
   const [userId, setUserId] = useState(null);
 
   useEffect(() => {
-    setUserId(props.dataUser[0])
+    setUserId(props.dataUser)
   }, [props.dataUser])
 
   const handleOpen = () => {

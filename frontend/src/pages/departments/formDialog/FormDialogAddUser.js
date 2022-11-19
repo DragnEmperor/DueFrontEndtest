@@ -17,7 +17,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 const initialFormState = {
   id: null,
   name: "",
-  admin_email: "",
+  superAdminEmail: "",
 };
 
 const FormDialogAddUser = props => {
@@ -49,17 +49,17 @@ const FormDialogAddUser = props => {
       tempErrors["name"] = "Cannot be empty";
     }
 
-    if (!user.admin_email || user.admin_email.trim() === "") {
+    if (!user.superAdminEmail || user.superAdminEmail.trim() === "") {
       formIsValid = false;
-      tempErrors["email"] = "Cannot be empty";
+      tempErrors["superAdminEmail"] = "Cannot be empty";
     }
 
     let regexp = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     // let re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
-    if (!regexp.test(user.admin_email)) {
+    if (!regexp.test(user.superAdminEmail)) {
       formIsValid = false;
-      tempErrors["email"] = "Email is not valid";
+      tempErrors["superAdminEmail"] = "Email is not valid";
     }
 
     setErrors(tempErrors);
@@ -73,9 +73,11 @@ const FormDialogAddUser = props => {
       toast.success("Data succesfully updated");
     };
     e.preventDefault();
+    console.log('submit call1')
 
     if (validate()) {
-      props.create(user, onSuccess);
+      console.log('submit call2')
+      props.create(user,onSuccess());
     }
   };
 
@@ -125,12 +127,12 @@ const FormDialogAddUser = props => {
           <br />
 
           <TextField
-            name="admin_email"
+            name="superAdminEmail"
             label="Admin Email"
-            value={user.email}
+            value={user.superAdminEmail}
             fullWidth
             onChange={handleInputChange}
-            {...(errors.email && { error: true, helperText: errors.email })}
+            {...(errors.superAdminEmail && { error: true, helperText: errors.superAdminEmail })}
           />
         </DialogContent>
 

@@ -6,7 +6,7 @@ export const ACTION_TYPES = {
     MAP_DELETE: 'MAP_DELETE',
     MAP_FETCH: 'MAP_FETCH',
     MAP_FETCH_ALL: 'MAP_FETCH_ALL',
-    MAP_PAGINATION: 'MAP_PAGINATION'
+    // MAP_PAGINATION: 'MAP_PAGINATION'
 }
 
 const formatingInput = (input) => {
@@ -38,16 +38,16 @@ export const fetchAll = () => dispatch => {
         .catch(err => console.log(err))
 }
 
-export const Pagination = (page = 1, limit = 10, name = "", category = "all") => dispatch => {
-    API.map().fetchPagination(page, Math.abs(limit), name, category)
-        .then(res =>{
-            dispatch({
-                type: ACTION_TYPES.MAP_PAGINATION,
-                payload: res.data
-            })
-        })
-        .catch(err => console.log(err))
-}
+// export const Pagination = (page = 1, limit = 10, name = "", category = "all") => dispatch => {
+//     API.map().fetchPagination(page, Math.abs(limit), name, category)
+//         .then(res =>{
+//             dispatch({
+//                 type: ACTION_TYPES.MAP_PAGINATION,
+//                 payload: res.data
+//             })
+//         })
+//         .catch(err => console.log(err))
+// }
 
 export const fetchById = (id, onSuccess) => dispatch => {
     API.map().fetchById(id)

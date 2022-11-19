@@ -1,17 +1,28 @@
 import axios from "axios";
 
 const http = axios.create({
-  baseURL: 'http://localhost:3000/',
+  baseURL: 'http://localhost:5000/',
   headers: {
     "Content-type": "application/json"
-  }
+  },
+  withCredentials: true
 });
 
 export default {
   auth(url = 'auth') {
     return {
-        login: ({email, profile}) => http.post(url + '/google', {email, profile}),
-        register: ({email, name, password}) => http.post(url + '/register', {email, name, password})
+        login: ({email, profile}) => {
+          if(profile.isGodLevelAdmin)
+          return 'God Level Admin';
+          if(profile.subAdminRightsOf.length!=0){
+            return 'Sub Admin';
+          }
+          if(profile.superAdminRightsOf.length!=0){
+            return 'Super Admin';
+       }
+        },
+        // register: ({email, name, password}) => http.post(url + '/register', {email, name, password}),
+        logout: () => http.get(url + '/logout')
     }
   },
 
@@ -24,8 +35,8 @@ export default {
 
       return {
           fetchAll: () => http.get(url + '/list', config),
-          fetchPagination: (page, limit, name, category) => 
-              http.get(url + "?page=" + page + "&limit=" + limit + "&name=" + name + "&category=" + category, config),
+          // fetchPagination: (page, limit, name, category) => 
+          //     http.get(url + "?page=" + page + "&limit=" + limit + "&name=" + name + "&category=" + category, config),
           fetchById: id => http.get(url + "/" + id, config),
           create: newRecord => http.post(url, newRecord, config),
           update: (id, updatedRecord) => http.put(url + "/" + id, updatedRecord, config),
@@ -33,7 +44,7 @@ export default {
       }
   },
 
-  user(url = 'user') {
+  user(url = 'department') {
       const config = {
         headers: {
           'authorization': 'Bearer ' + localStorage.getItem('token')
@@ -41,9 +52,9 @@ export default {
       };
 
       return {
-          fetchAll: () => http.get(url + '/list', config),
-          fetchPagination: (page, limit = 10, name = null, email = null) => 
-              http.get(url + "?page=" + page + "&limit=" + limit + "&name=" + name + "&email=" + email, config),
+          fetchAll: () => http.get(url , config),
+          // fetchPagination: (page, limit = 10, name = null, email = null) => 
+          //     http.get(url + "?page=" + page + "&limit=" + limit + "&name=" + name + "&email=" + email, config),
           fetchById: id => http.get(url + "/" + id, config),
           create: newRecord => http.post(url, newRecord, config),
           update: (id, updatedRecord) => http.put(url + "/" + id, updatedRecord, config),

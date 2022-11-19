@@ -27,12 +27,12 @@ export const user = (state = initialState, action) => {
                 ...state,
                 users:state.users.filter(x => x.id !== action.payload)
             }
-        case ACTION_TYPES.USER_PAGINATION:
-            return {
-                ...state,
-                users: [...action.payload.users],
-                metaUser: action.payload.meta
-            }
+        // case ACTION_TYPES.USER_PAGINATION:
+        //     return {
+        //         ...state,
+        //         users: [...action.payload.users],
+        //         metaUser: action.payload.meta
+        //     }
         default:
             return state;
     }

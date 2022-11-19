@@ -19,33 +19,33 @@ const UserTable = ({ classes, ...props }) => {
     const [rowsPerPage, setRowsPerPage] = useState(5)
 
     useEffect(() => {
-        props.fetchPagination(1, rowsPerPage)
+        // props.fetchPagination(1, rowsPerPage)
     }, [])
 
     const handleChangePage = async (newPage) => {
         await setPage(newPage);
-        props.fetchPagination(newPage + 1, rowsPerPage)
+        // props.fetchPagination(newPage + 1, rowsPerPage)
     };
 
     const handleChangeRowsPerPage = async (rowsPerPage) => {
         await setRowsPerPage(rowsPerPage);
         await setPage(0);
-        props.fetchPagination(1, rowsPerPage)
+        // props.fetchPagination(1, rowsPerPage)
     };
 
     const handleSearch = async (searchText) => {
         await setPage(0);
-        props.fetchPagination(1, rowsPerPage, searchText, searchText)
+        // props.fetchPagination(1, rowsPerPage, searchText, searchText)
     };
 
     const handleFilterChange = async (name, email) => {
         await setPage(0);
-        props.fetchPagination(1, rowsPerPage, name, email)
+        // props.fetchPagination(1, rowsPerPage, name, email)
     };
 
     const refresh = async () => {
         await setPage(0);
-        props.fetchPagination(1, rowsPerPage)
+        // props.fetchPagination(1, rowsPerPage)
     }
     
     const columns = [
@@ -205,7 +205,7 @@ const mapStateToProps = state => ({
 })
 
 const mapActionToProps = {
-    fetchPagination: actions.Pagination,
+    // fetchPagination: actions.Pagination,
     create: actions.create,
     update: actions.update,
     delete: actions.Delete

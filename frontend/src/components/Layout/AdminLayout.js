@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useContext, useEffect} from "react";
 import {
   Route,
   Switch,
@@ -39,7 +39,8 @@ import Duebin from "../../pages/duebin";
 
 // Duelist
 import Duelist from "../../pages/duelist";
-
+//Logout
+import Logout from "../Logout/Logout";
 // user with context
 import UserWithContext from "../../pages/user-context";
 import AddUserForm from "../../pages/user-context/form/AddUserForm";
@@ -48,12 +49,13 @@ import EditUserForm from "../../pages/user-context/form/EditUserForm";
 // context
 import { useLayoutState } from "../../context/LayoutContext";
 import { UserProvider } from "../../pages/user-context/context/UserContext";
-
+import { AuthContext } from "../../context/AuthContext";
 function AdminLayout(props) {
   var classes = useStyles();
-
   // global
   var layoutState = useLayoutState();
+  const {logout,getAuthUser} = useContext(AuthContext)
+  const authUser=getAuthUser()
 
   return (
     <div className={classes.root}>
@@ -75,9 +77,9 @@ function AdminLayout(props) {
                 <Route path="/admin/map/edit/:id" component={EditForm} />
 
                 <Route exact path="/admin/user/" component={User} />
-                <Route exact path="/admin/subadmins/" component={Subadmin} />
-                <Route exact path="/admin/superadmin/" component={Superadmin} />
-                <Route exact path="/admin/departments/" component={Department} />
+                <Route exact path="/admin/subadmins/" component={authUser && authUser.subAdminRightsOf.length!=0?Subadmin:Logout} />
+                <Route exact path="/admin/superadmin/" component={authUser && authUser.superAdminRightsOf.length!=0?Superadmin:Logout} />
+                <Route exact path="/admin/departments/" component={authUser && authUser.isGodLevelAdmin?Department:Logout} />
                 <Route exact path="/admin/duebin/" component={Duebin} />
                 <Route exact path="/admin/duelist/" component={Duelist} />
 

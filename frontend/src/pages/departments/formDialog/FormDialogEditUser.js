@@ -17,7 +17,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 const initialFormState = {
   id: null,
   name: "",
-  admin_email: "",
+  superAdminEmail: "",
 };
 
 const FormDialogEditUser = props => {
@@ -30,7 +30,7 @@ const FormDialogEditUser = props => {
     setUser({
       id: props.dataUser[0],
       name: props.dataUser[1],
-      admin_email: props.dataUser[2],
+      superAdminEmail: props.dataUser[2],
     });
     setOpen(true);
   };
@@ -53,7 +53,7 @@ const FormDialogEditUser = props => {
       tempErrors["name"] = "Cannot be empty";
     }
 
-    if (!user.admin_email || user.admin_email.trim() === "") {
+    if (!user.superAdminEmail || user.superAdminEmail.trim() === "") {
       formIsValid = false;
       tempErrors["email"] = "Cannot be empty";
     }
@@ -61,7 +61,7 @@ const FormDialogEditUser = props => {
     let regexp = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     // let re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
-    if (!regexp.test(user.admin_email)) {
+    if (!regexp.test(user.superAdminEmail)) {
       formIsValid = false;
       tempErrors["email"] = "Email is not valid";
     }
@@ -128,7 +128,7 @@ const FormDialogEditUser = props => {
           <br />
 
           <TextField
-            name="admin_email"
+            name="superAdminEmail"
             label="Admin Email"
             value={user.email}
             fullWidth

@@ -7,6 +7,7 @@ import FormDialogAddUser from "../formDialog/FormDialogAddUser";
 import FormDialogEditUser from "../formDialog/FormDialogEditUser";
 import FormDialogDeleteUser from "../formDialog/FormDialogDeleteUser";
 import FormDialogActivateDeactivateDepartment from "../formDialog/FormDialogActivateDeactivateDepartment";
+import axios from "axios";
 
 const styles = theme => ({
     paperTable: {
@@ -22,30 +23,46 @@ const UserTable = ({ classes, ...props }) => {
         props.fetchPagination(1, rowsPerPage)
     }, [])
 
+    const createDepartment=(data)=>{
+    console.log('receive',data);
+     axios.post('http://localhost:5000/department/create',data,{withCredentials:true})
+     .then(res=>{
+         console.log(res)
+         refresh()
+        })
+        .catch(err=>{
+            console.log(err)
+        })
+    }
+
+    const deleteDepartment=(deptName)=>{
+    //    code for deleting department  
+    }
+
     const handleChangePage = async (newPage) => {
         await setPage(newPage);
-        props.fetchPagination(newPage + 1, rowsPerPage)
+        props.fetchPagination(newPage + 1, rowsPerPage,'GodLevel')
     };
 
     const handleChangeRowsPerPage = async (rowsPerPage) => {
         await setRowsPerPage(rowsPerPage);
         await setPage(0);
-        props.fetchPagination(1, rowsPerPage)
+        props.fetchPagination(1, rowsPerPage,'GodLevel')
     };
 
     const handleSearch = async (searchText) => {
         await setPage(0);
-        props.fetchPagination(1, rowsPerPage, searchText, searchText)
+        props.fetchPagination(1, rowsPerPage,'GodLevel', searchText, searchText)
     };
 
     const handleFilterChange = async (name, email) => {
         await setPage(0);
-        props.fetchPagination(1, rowsPerPage, name, email)
+        props.fetchPagination(1, rowsPerPage,'GodLevel', name, email)
     };
 
     const refresh = async () => {
         await setPage(0);
-        props.fetchPagination(1, rowsPerPage)
+        props.fetchPagination(1, rowsPerPage,'GodLevel')
     }
     
     const columns = [
@@ -90,8 +107,8 @@ const UserTable = ({ classes, ...props }) => {
             
         },
         {
-            name: "admin_email",
-            label: "Admin Email",
+            name: "superAdminEmail",
+            label: "Super Admin Email",
             options: {
                 filter: true,
                 sort: false,
@@ -108,7 +125,7 @@ const UserTable = ({ classes, ...props }) => {
                         <th key={columnMeta.index} style={{paddingRight: "16px"}}>
                             <div style={{display:"flex", flexDirection:"row", justifyContent:"flex-end"}}>
                                 <FormDialogAddUser component={Paper}  
-                                    create={props.create}
+                                    create={createDepartment}
                                     refresh={refresh}
                                 />
                             </div>
@@ -129,7 +146,7 @@ const UserTable = ({ classes, ...props }) => {
                             />
                             <FormDialogDeleteUser 
                                 dataUser={tableMeta.rowData}
-                                delete={props.delete}
+                                delete={deleteDepartment}
                                 refresh={refresh}
                             />
                         </div>
@@ -143,13 +160,13 @@ const UserTable = ({ classes, ...props }) => {
         filterType: 'textField',
         responsive: 'stacked',
         selectableRows: false,
-        rowsPerPageOptions: [5, 10, 25],
+        // rowsPerPageOptions: [5, 10, 25],
         serverSide: true,
         viewColumns: false,
         print: false,
         download: false,
 
-        rowsPerPage: rowsPerPage,
+        // rowsPerPage: rowsPerPage,
         count: props.meta.totalDocs || 0,
         page: page,
 

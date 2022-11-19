@@ -6,7 +6,7 @@ export const ACTION_TYPES = {
     USER_DELETE: 'USER_DELETE',
     USER_FETCH: 'USER_FETCH',
     USER_FETCH_ALL: 'USER_FETCH_ALL',
-    USER_PAGINATION: 'USER_PAGINATION'
+    // USER_PAGINATION: 'USER_PAGINATION'
 }
 
 export const fetchAll = () => dispatch => {
@@ -20,12 +20,29 @@ export const fetchAll = () => dispatch => {
         .catch(err => console.log(err))
 }
 
-export const Pagination = (page = 1, limit = 5, name = "", email = "") => dispatch => {
-    API.user().fetchPagination(page, Math.abs(limit), name, email)
+export const Pagination = (page = 1, limit = 5,access, name = "", email = "") => dispatch => {
+    // API.user().fetchPagination(page, Math.abs(limit), name, email)
+    //     .then(res =>{
+    //         dispatch({
+    //             type: ACTION_TYPES.USER_PAGINATION,
+    //             payload: res.data
+    //         })
+    //     })
+    //     .catch(err => console.log(err))
+    let url="";
+    if(access=='GodLevel')
+    url='department/list_god'
+    else if(access=='SuperAdmin')
+    url='department/list_sub_admins/'+name
+    else if(access=='SubAdmin')
+    url='department/list_sub'
+    else url=""
+    API.user(url).fetchAll()
         .then(res =>{
+            console.log(res)
             dispatch({
-                type: ACTION_TYPES.USER_PAGINATION,
-                payload: res.data
+                type: ACTION_TYPES.USER_FETCH_ALL,
+                payload: res.data.list
             })
         })
         .catch(err => console.log(err))

@@ -7,45 +7,60 @@ import FormDialogAddUser from "../formDialog/FormDialogAddUser";
 import FormDialogEditUser from "../formDialog/FormDialogEditUser";
 import FormDialogDeleteUser from "../formDialog/FormDialogDeleteUser";
 import FormDialogActivateDeactivateUser from "../formDialog/FormDialogActivateDeactivateUser";
+import FormDialogSelectDepartment from "../formDialog/FormDialogSelectDepartment";
 
 const styles = theme => ({
     paperTable: {
         padding: theme.spacing(0),
-    }
+    },
+    paper: {
+        padding: theme.spacing(0),
+    },
 })
 
 const UserTable = ({ classes, ...props }) => {
     const [page, setPage] = useState(0)
     const [rowsPerPage, setRowsPerPage] = useState(5)
+    const [selectDept,setSelectDept]=useState(true)
+    const [deptName,setDeptName]=useState("")
 
     useEffect(() => {
-        props.fetchPagination(1, rowsPerPage)
-    }, [])
-
+        console.log(localStorage.getItem('authDueUser'))
+        props.fetchPagination(1,rowsPerPage,'SuperAdmin',deptName)
+    }, [deptName])
+     
+    const handleSelectDept=()=>{
+        setSelectDept(false)
+    }
+    
+    const handledeptName=(value)=>{
+       setDeptName(value);
+       setSelectDept(false)
+    }
     const handleChangePage = async (newPage) => {
         await setPage(newPage);
-        props.fetchPagination(newPage + 1, rowsPerPage)
+        props.fetchPagination(newPage + 1, rowsPerPage,'SuperAdmin')
     };
 
     const handleChangeRowsPerPage = async (rowsPerPage) => {
         await setRowsPerPage(rowsPerPage);
         await setPage(0);
-        props.fetchPagination(1, rowsPerPage)
+        props.fetchPagination(1, rowsPerPage,'SuperAdmin')
     };
-
+// 
     const handleSearch = async (searchText) => {
         await setPage(0);
-        props.fetchPagination(1, rowsPerPage, searchText, searchText)
+        props.fetchPagination(1, rowsPerPage,'SuperAdmin', searchText, searchText)
     };
 
     const handleFilterChange = async (name, email) => {
         await setPage(0);
-        props.fetchPagination(1, rowsPerPage, name, email)
+        props.fetchPagination(1, rowsPerPage,'SuperAdmin', name, email)
     };
 
     const refresh = async () => {
         await setPage(0);
-        props.fetchPagination(1, rowsPerPage)
+        props.fetchPagination(1, rowsPerPage,'SuperAdmin')
     }
     
     const columns = [
@@ -60,7 +75,7 @@ const UserTable = ({ classes, ...props }) => {
         },
         {
             // left side of first column is too close with the container, give more space on it
-            name: "Department Name ",
+            name: "displayName",
             label: "Department Name",
             options: {
                 filter: true,
@@ -91,8 +106,8 @@ const UserTable = ({ classes, ...props }) => {
             
         },
         {
-            name: "Email - Admin Dept",
-            label: "Email- Admin Dept",
+            name: "email",
+            label: "SubAdmin Email",
             options: {
                 filter: true,
                 sort: false,
@@ -149,7 +164,7 @@ const UserTable = ({ classes, ...props }) => {
     ];
 
     const options = {
-        filterType: 'textField',
+        filterType: 'dropdown',
         responsive: 'stacked',
         selectableRows: false,
         rowsPerPageOptions: [5, 10, 25],
@@ -191,11 +206,16 @@ const UserTable = ({ classes, ...props }) => {
     };
     
     return (
+        (selectDept ? 
+            (<Paper className={classes.paper}>
+                <FormDialogSelectDepartment handleSelectDept={handleSelectDept} handleDept={handledeptName}/>
+            </Paper>)
+        :
         <MUIDataTable className={classes.paperTable}
-            data={props.users}
-            columns={columns}
-            options={options}
-        />
+        data={props.users}
+        columns={columns}
+        options={options}
+    /> )
     );
 }
 

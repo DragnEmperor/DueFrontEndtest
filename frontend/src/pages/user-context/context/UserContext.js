@@ -15,7 +15,7 @@ class UserProvider extends React.PureComponent {
     };
 
     fetchUsers = async (page, rowsPerPage = 5, name = null, email = null) => {
-      API.user().fetchPagination(page, rowsPerPage, name, email)
+      API.user().fetchAll(page, rowsPerPage, name, email)
         .then(res => {
           this.setState ({
             users : res.data.users,

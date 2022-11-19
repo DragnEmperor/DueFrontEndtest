@@ -14,6 +14,7 @@ import { store } from "./store/store";
 // toast
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import NoAccount from './pages/noaccount/noaccount'
 
 export default function App() {
   // global
@@ -38,6 +39,7 @@ export default function App() {
             <Route exact path="/" render={() => <Redirect to="/admin/dashboard" />} />
             <Route exact path="/admin" render={() => <Redirect to="/admin/dashboard" />} />
             <Route path="/login" component={Login} />
+            <Route path="/noaccount" component={NoAccount} />
             <ProtectedRoute path="/admin" component={AdminLayout} />
             <Route component={Error} />
           </Switch>

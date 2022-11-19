@@ -38,21 +38,32 @@ function Login(props) {
   var [emailValue, setEmailValue] = useState("");
   var [passwordValue, setPasswordValue] = useState("");
   var [profileValue, setProfileValue] = useState("");
+  var [accessBackend, setaccessBackend] = useState(false);
 
   useEffect(() => {
+    let userProfile="";
     const getUser = () => {
       axios.get("http://localhost:5000/auth/login/success", { withCredentials: true })
         .then((response) => {
           console.log(response);
-          setProfileValue(response.data.user);
+          localStorage.setItem("profile", JSON.stringify(response.data.user));
+          setProfileValue(response.data.user)
+          return response.data.user;
         })
         .catch((err) => {
           console.log(err);
         });
-        handleLogin();
-    };
-    getUser();
-  }, []);
+      };
+    if(localStorage.getItem("profile")){
+      userProfile=JSON.parse(localStorage.getItem("profile"));
+      setProfileValue(userProfile)
+    }
+    
+    if(accessBackend || localStorage.getItem("accessBackend")){
+      getUser();
+      localStorage.setItem("accessBackend", true);
+    }
+  }, [accessBackend]);
 
    useEffect(() => {
     handleLogin();
@@ -68,7 +79,10 @@ function Login(props) {
     if(profileValue){
       console.log(profileValue)
       if(profileValue.isGodLevelAdmin || profileValue.subAdminRightsOf.length!=0 || profileValue.superAdminRightsOf.length!=0){
-        console.log("login");
+        login(profileValue.email,profileValue,props.history,setIsLoading,setErrorMessage);
+      }
+      else{
+        props.history.push('/noaccount')
       }
     }
   }
@@ -179,7 +193,9 @@ function Login(props) {
                   <div className={classes.formDivider} />
                 </div>
                 
-                <Button size="large" className={classes.googleButton} onClick={()=>window.open("http://localhost:5000/auth/google", "_self")}>
+                <Button size="large" className={classes.googleButton} onClick={()=>{
+                  setaccessBackend(true); 
+                  return window.open("http://localhost:5000/auth/google", "_self")}}>
                   <img src={google} alt="google" className={classes.googleIcon} />
                   &nbsp;Sign in with Google
                 </Button>

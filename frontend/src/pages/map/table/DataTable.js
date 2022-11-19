@@ -24,12 +24,12 @@ const DataTable = ({ classes, ...props }) => {
 	let [ name, setName ] = useState("")
 
     useEffect(() => {
-        props.fetchPagination(1, rowsPerPage)
+        // props.fetchPagination(1, rowsPerPage)
     }, [])
 
     const onDelete = async id => {
         const onSuccess = () => {
-            props.fetchPagination(1, rowsPerPage)
+            // props.fetchPagination(1, rowsPerPage)
             toast.success('Data succesfully deleted');
         }
 
@@ -38,7 +38,7 @@ const DataTable = ({ classes, ...props }) => {
 
     const handleChangePage = async (event, newPage) => {
         await setPage(newPage);
-        props.fetchPagination(newPage + 1, rowsPerPage)
+        // props.fetchPagination(newPage + 1, rowsPerPage)
     };
 
     const handleChangeRowsPerPage = async (event) => {
@@ -46,7 +46,7 @@ const DataTable = ({ classes, ...props }) => {
             const val = parseInt(event.target.value, 10)
             await setRowsPerPage(val);
             await setPage(0);
-            props.fetchPagination(1, val)
+            // props.fetchPagination(1, val)
         }
     };
 
@@ -54,14 +54,14 @@ const DataTable = ({ classes, ...props }) => {
 		const { value } = event.target
 		name = value
 		await setName(value)
-		props.fetchPagination(1, rowsPerPage,  value, category)
+		// props.fetchPagination(1, rowsPerPage,  value, category)
 	}
 
 	const categoryChange = async (event) => {
 		const { value } = event.target
 		category = value
 		await setCategory(value)
-		props.fetchPagination(1, rowsPerPage,  name, value)
+		// props.fetchPagination(1, rowsPerPage,  name, value)
     }
 
     return (
@@ -140,7 +140,7 @@ const mapStateToProps = state => ({
 })
 
 const mapActionToProps = {
-    fetchPagination: actions.Pagination,
+    // fetchPagination: actions.Pagination,
     delete: actions.Delete
 }
 

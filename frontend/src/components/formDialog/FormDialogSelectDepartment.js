@@ -35,6 +35,11 @@ const FormDialogSelectDepartment =({ classes, ...props }) => {
     })
    }
 
+   const handleDept=(value)=>{
+    localStorage.setItem('setDueDepartment',JSON.stringify(value))
+    props.history.replace('/admin/subadmins')
+   }
+
   const columns = [
     // {
     //     name: "id",
@@ -100,8 +105,8 @@ const FormDialogSelectDepartment =({ classes, ...props }) => {
             customBodyRender: (value, tableMeta, updateValue) => {
                 return (
                         <div style={{display:"flex", flexDirection:"row", justifyContent:"flex-end"}}>
-                            <FormDialogSelectButton component={Paper}  
-                                create={props.create} handleDept={()=>props.handleDept(tableMeta.rowData[0])}
+                            <FormDialogSelectButton component={Paper} btnText={'Select'}
+                                create={props.create} handleDept={()=>handleDept(tableMeta.rowData[0])}
                             />
                         </div>
                 );
@@ -127,7 +132,9 @@ const FormDialogSelectDepartment =({ classes, ...props }) => {
     };
   return (
     <div>
-      <MUIDataTable className={classes.paperTable}
+      <MUIDataTable 
+      title={"Select Department"}
+      className={classes.paperTable}
       data={getData}
       options={options}
       columns={columns}/>

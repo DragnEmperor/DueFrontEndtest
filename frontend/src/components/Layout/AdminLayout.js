@@ -29,6 +29,7 @@ import User from "../../pages/user";
 // Department
 import Department from "../../pages/departments";
 
+import SelectDepartment from "../formDialog/FormDialogSelectDepartment";
 // Admin
 import Subadmin from "../../pages/subadmins";
 
@@ -82,7 +83,7 @@ function AdminLayout(props) {
                 <Route exact path="/admin/departments/" component={authUser && authUser.isGodLevelAdmin?Department:Logout} />
                 <Route exact path="/admin/duebin/" component={Duebin} />
                 <Route exact path="/admin/duelist/" component={Duelist} />
-                <Route exact path="/admin/setdepartment/" component={Superadmin} />
+                <Route path="/admin/setdepartment/" component={SelectDepartment} />
                 <UserProvider>
                   <Route exact path="/admin/usercontext" component={UserWithContext} />
                   <Route path="/admin/usercontext/add" component={AddUserForm} />

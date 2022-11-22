@@ -97,7 +97,9 @@ const FormDialogAddUser = props => {
           id="form-dialog-title"
           style={{ padding: "30px 30px 0px 30px" }}
         >
-          Add Department
+          {props.for==="Department" && "Add Department Details"}
+          {props.for==="Student" && "Add Student Details"}
+          {props.for==="SubAdmin" && "Add SubAdmin Details"}
         </DialogTitle>
 
         <DialogContent style={{ padding: "30px 30px 10px 30px" }}>

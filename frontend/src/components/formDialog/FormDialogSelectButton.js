@@ -6,7 +6,7 @@ const FormDialogSelectButton = props => {
   return (
     <div>
       <Button variant="contained" onClick={props.handleDept} color="secondary">
-        Select
+        {props.btnText}
       </Button>
     </div>
   );

@@ -6,7 +6,7 @@ import * as actions from "../../../actions/user";
 import FormDialogAddUser from "../../../components/formDialog/FormDialogAddUser";
 import FormDialogEditUser from "../../../components/formDialog/FormDialogEditUser";
 import FormDialogDeleteUser from "../../../components/formDialog/FormDialogDeleteUser";
-import FormDialogSelectDepartment from "../../../components/formDialog/FormDialogSelectDepartment";
+import FormDialogSelectButton from "../../../components/formDialog/FormDialogSelectButton";
 
 const styles = theme => ({
     paperTable: {
@@ -17,13 +17,19 @@ const styles = theme => ({
 const UserTable = ({ classes, ...props }) => {
     const [page, setPage] = useState(0)
     const [rowsPerPage, setRowsPerPage] = useState(5)
-    const [selectDept,setSelectDept]=useState(true)
     const [deptName,setDeptName]=useState("")
 
     useEffect(() => {
         if(deptName!=="" && deptName!==null)
         props.fetchPagination(1,rowsPerPage,'/list_students/'+deptName)
     }, [deptName])
+
+    useEffect(() => {
+        const getName=JSON.parse(localStorage.getItem('setDueDepartment'))
+        if(!getName)
+        props.history.replace('/admin/setdepartment/')
+        setDeptName(getName)
+    }, [])
 
     const handleChangePage = async (newPage) => {
         await setPage(newPage);
@@ -48,7 +54,7 @@ const UserTable = ({ classes, ...props }) => {
 
     const refresh = async () => {
         await setPage(0);
-        // props.fetchPagination(1, rowsPerPage)
+        props.fetchPagination(1, rowsPerPage,'/list_students/'+deptName)
     }
     
     const columns = [
@@ -110,11 +116,15 @@ const UserTable = ({ classes, ...props }) => {
                 customHeadRender: (columnMeta, handleToggleColumn) => {
                     return (
                         <th key={columnMeta.index} style={{paddingRight: "16px"}}>
-                            <div style={{display:"flex", flexDirection:"row", justifyContent:"flex-end"}}>
-                                <FormDialogAddUser component={Paper}  
+                            <div style={{ display: "flex", flexDirection: "row", justifyContent: "flex-end", alignItems: 'center' }}>
+                                <FormDialogAddUser component={Paper}
                                     create={props.create}
                                     refresh={refresh}
+                                    for="Student"
                                 />
+                                <div>
+                                    <FormDialogSelectButton btnText='Change Department' handleDept={() => props.history.replace('/admin/setdepartment/')} />
+                                </div>
                             </div>
                         </th>
                     );
@@ -125,11 +135,14 @@ const UserTable = ({ classes, ...props }) => {
                             <FormDialogEditUser
                                 dataUser={tableMeta.rowData}
                                 update={props.update}
+                                url='students/edit'
                             />
                             <FormDialogDeleteUser 
                                 dataUser={tableMeta.rowData}
                                 delete={props.delete}
                                 refresh={refresh}
+                                isGodLevel={false}
+                                url='students/delete'
                             />
                         </div>
                     );
@@ -181,10 +194,12 @@ const UserTable = ({ classes, ...props }) => {
     };
     
     return (
-        <MUIDataTable className={classes.paperTable}
-            data={props.users}
-            columns={columns}
-            options={options}
+        <MUIDataTable 
+        title={"Department : "+deptName}
+        className={classes.paperTable}
+        data={props.users}
+        columns={columns}
+        options={options}
         />
     );
 }
@@ -195,7 +210,7 @@ const mapStateToProps = state => ({
 })
 
 const mapActionToProps = {
-    // fetchPagination: actions.Pagination,
+    fetchPagination: actions.Pagination,
     create: actions.create,
     update: actions.update,
     delete: actions.Delete

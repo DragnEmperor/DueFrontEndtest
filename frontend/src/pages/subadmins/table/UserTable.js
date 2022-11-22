@@ -7,7 +7,7 @@ import FormDialogAddUser from "../../../components/formDialog/FormDialogAddUser"
 import FormDialogEditUser from "../../../components/formDialog/FormDialogEditUser";
 import FormDialogDeleteUser from "../../../components/formDialog/FormDialogDeleteUser";
 // import FormDialogActivateDeactivateUser from "../../../components/formDialog/FormDialogActivateDeactivateDepartment";
-import FormDialogSelectDepartment from "../../../components/formDialog/FormDialogSelectDepartment";
+import FormDialogSelectButton from "../../../components/formDialog/FormDialogSelectButton";
 
 const styles = theme => ({
     paperTable: {
@@ -17,23 +17,20 @@ const styles = theme => ({
 
 const UserTable = ({ classes, ...props }) => {
     const [page, setPage] = useState(0)
-    const [rowsPerPage, setRowsPerPage] = useState(5)
-    const [selectDept,setSelectDept]=useState(true)
+    const [rowsPerPage, setRowsPerPage] = useState(100)
     const [deptName,setDeptName]=useState("")
 
     useEffect(() => {
         if(deptName!=="" && deptName!==null)
-        props.fetchPagination(1,rowsPerPage,'superadmin/list_super/'+deptName)
+        props.fetchPagination(1,rowsPerPage,'superadmin/list_subadmins/'+deptName)
     }, [deptName])
 
-    const handleSelectDept=()=>{
-        setSelectDept(false)
-    }
-    
-    const handledeptName=(value)=>{
-       setDeptName(value);
-       setSelectDept(false)
-    }
+    useEffect(() => {
+        const getName=JSON.parse(localStorage.getItem('setDueDepartment'))
+        if(!getName)
+        props.history.replace('/admin/setdepartment/')
+        setDeptName(getName)
+    }, [])
 
     const handleChangePage = async (newPage) => {
         await setPage(newPage);
@@ -58,7 +55,7 @@ const UserTable = ({ classes, ...props }) => {
 
     const refresh = async () => {
         await setPage(0);
-        props.fetchPagination(1, rowsPerPage,'superadmin/list_students/'+deptName)
+        props.fetchPagination(1, rowsPerPage,'/list_subadmins/'+deptName)
     }
     
     const columns = [
@@ -128,12 +125,16 @@ const UserTable = ({ classes, ...props }) => {
                 customHeadRender: (columnMeta, handleToggleColumn) => {
                     return (
                         <th key={columnMeta.index} style={{paddingRight: "16px"}}>
-                            <div style={{display:"flex", flexDirection:"row", justifyContent:"flex-end"}}>
+                            <div style={{display:"flex", flexDirection:"row", justifyContent:"flex-end",alignItems:'center'}}>
                                 <FormDialogAddUser component={Paper}  
                                     create={props.create}
                                     refresh={refresh}
-                                    url='superadmin/add_student'
+                                    url='superadmin/add_sub_admin'
+                                    for="SubAdmin"
                                 />
+                                <div>
+                                <FormDialogSelectButton btnText='Change Department' handleDept={()=>props.history.replace('/admin/setdepartment/')}/>
+                                </div>
                             </div>
                         </th>
                     );
@@ -156,7 +157,7 @@ const UserTable = ({ classes, ...props }) => {
                                 delete={props.delete}
                                 refresh={refresh}
                                 url='superadmin/revoke_student_due'
-                                isGodlevel={false}
+                                isGodLevel={false}
                             />
                         </div>
                     );
@@ -208,17 +209,13 @@ const UserTable = ({ classes, ...props }) => {
     };
     
     return (
-        (selectDept ? 
-            (<Paper className={classes.paper}>
-                <FormDialogSelectDepartment handleSelectDept={handleSelectDept} handleDept={handledeptName} delete={props.delete}
-                update={props.update} create={props.create}/>
-            </Paper>)
-        :
-        <MUIDataTable className={classes.paperTable}
+        <MUIDataTable
+        title={"Department : "+deptName}
+        className={classes.paperTable}
         data={props.users}
         columns={columns}
         options={options}
-    /> )
+    /> 
     );
 }
 

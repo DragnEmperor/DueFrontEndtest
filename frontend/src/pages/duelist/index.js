@@ -20,7 +20,7 @@ const Duelist = ({ classes, ...props }) => {
             <Grid container spacing={4}>
                 <Grid item xs={12} >
                     <Paper className={classes.paper}>
-                        <UserTable />
+                        <UserTable history={props.history}/>
                     </Paper>
                 </Grid>
             </Grid>

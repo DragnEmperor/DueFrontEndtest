@@ -111,6 +111,7 @@ const UserTable = ({ classes, ...props }) => {
                                     create={props.create}
                                     refresh={refresh}
                                     url='department/create'
+                                    for="Department"
                                 />
                             </div>
                         </th>

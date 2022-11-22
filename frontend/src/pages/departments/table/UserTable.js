@@ -3,11 +3,10 @@ import { Paper, withStyles } from '@material-ui/core';
 import MUIDataTable from "mui-datatables";
 import { connect } from "react-redux";
 import * as actions from "../../../actions/user";
-import FormDialogAddUser from "../formDialog/FormDialogAddUser";
-import FormDialogEditUser from "../formDialog/FormDialogEditUser";
-import FormDialogDeleteUser from "../formDialog/FormDialogDeleteUser";
-import FormDialogActivateDeactivateDepartment from "../formDialog/FormDialogActivateDeactivateDepartment";
-import axios from "axios";
+import FormDialogAddUser from "../../../components/formDialog/FormDialogAddUser";
+import FormDialogEditUser from "../../../components/formDialog/FormDialogEditUser";
+import FormDialogDeleteUser from "../../../components/formDialog/FormDialogDeleteUser";
+// import FormDialogActivateDeactivateDepartment from "../../../components/formDialog/FormDialogActivateDeactivateDepartment";
 
 const styles = theme => ({
     paperTable: {
@@ -20,65 +19,44 @@ const UserTable = ({ classes, ...props }) => {
     const [rowsPerPage, setRowsPerPage] = useState(100)
 
     useEffect(() => {
-        props.fetchPagination(1, rowsPerPage,'GodLevel')
+        props.fetchPagination(1, rowsPerPage,'department/list_god')
     }, [])
-
-    const createDepartment=(data,toastFunc)=>{
-    console.log('receive',data);
-     axios.post('http://localhost:5000/department/create',data,{withCredentials:true})
-     .then(res=>{
-         console.log(res)
-         toastFunc(res.data.message)
-         refresh()
-        })
-        .catch(err=>{
-            console.log(err)
-        })
-    
-    }
-
-    const deleteDepartment=(deptName)=>{
-    //    code for deleting department  
-    }
-    const updateDepartment=(deptName)=>{
-    //    code for updating department  
-    }
 
     // const handleChangePage = async (newPage) => {
     //     await setPage(newPage);
-    //     props.fetchPagination(newPage + 1, rowsPerPage,'GodLevel')
+    //     props.fetchPagination(newPage + 1, rowsPerPage,'department/list_god')
     // };
 
     const handleChangeRowsPerPage = async (rowsPerPage) => {
         await setRowsPerPage(rowsPerPage);
         await setPage(0);
-        props.fetchPagination(1, rowsPerPage,'GodLevel')
+        props.fetchPagination(1, rowsPerPage,'department/list_god')
     };
 
     const handleSearch = async (searchText) => {
         await setPage(0);
-        props.fetchPagination(1, rowsPerPage,'GodLevel', searchText, searchText)
+        props.fetchPagination(1, rowsPerPage,'department/list_god', searchText, searchText)
     };
 
     const handleFilterChange = async (name, email) => {
         await setPage(0);
-        props.fetchPagination(1, rowsPerPage,'GodLevel', name, email)
+        props.fetchPagination(1, rowsPerPage,'department/list_god', name, email)
     };
 
     const refresh = async () => {
-        await setPage(0);
-        props.fetchPagination(1, rowsPerPage,'GodLevel')
+        // await setPage(0);
+        props.fetchPagination(1, rowsPerPage,'department/list_god')
     }
     
     const columns = [
-        {
-            name: "id",
-            label: "ID",
-            options: {
-                filter: false,
-                sort: false,
-            }
-        },
+        // {
+        //     name: "id",
+        //     label: "ID",
+        //     options: {
+        //         filter: false,
+        //         sort: false,
+        //     }
+        // },
         {
             // left side of first column is too close with the container, give more space on it
             name: "name",
@@ -112,7 +90,7 @@ const UserTable = ({ classes, ...props }) => {
             
         },
         {
-            name: "superAdminEmail",
+            name: "superAdmin",
             label: "Super Admin Email",
             options: {
                 filter: true,
@@ -130,8 +108,9 @@ const UserTable = ({ classes, ...props }) => {
                         <th key={columnMeta.index} style={{paddingRight: "16px"}}>
                             <div style={{display:"flex", flexDirection:"row", justifyContent:"flex-end"}}>
                                 <FormDialogAddUser component={Paper}  
-                                    create={createDepartment}
+                                    create={props.create}
                                     refresh={refresh}
+                                    url='department/create'
                                 />
                             </div>
                         </th>
@@ -142,7 +121,9 @@ const UserTable = ({ classes, ...props }) => {
                         <div style={{display:"flex", flexDirection:"row", justifyContent:"flex-end"}}>
                             <FormDialogEditUser
                                 dataUser={tableMeta.rowData}
-                                update={updateDepartment}
+                                update={props.update}
+                                refresh={refresh}
+                                url='department/change_super_admin'
                             />
                             {/* code for freeze/unfreeze*/} 
                             {/* <FormDialogActivateDeactivateDepartment
@@ -152,8 +133,10 @@ const UserTable = ({ classes, ...props }) => {
                             /> */}
                             <FormDialogDeleteUser 
                                 dataUser={tableMeta.rowData}
-                                delete={deleteDepartment}
+                                delete={props.delete}
                                 refresh={refresh}
+                                url='department/revoke_super_admin'
+                                isGodLevel={true}
                             />
                         </div>
                     );

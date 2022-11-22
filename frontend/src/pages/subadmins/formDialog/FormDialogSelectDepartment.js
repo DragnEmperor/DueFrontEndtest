@@ -1,23 +1,9 @@
 import React, { useEffect, useState } from "react";
-import Button from "@material-ui/core/Button";
-import Dialog from "@material-ui/core/Dialog";
-import DialogActions from "@material-ui/core/DialogActions";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import { IconButton } from '@material-ui/core';
-import * as actions from "../../../actions/user";
-import { connect } from "react-redux";
-import { toast } from 'react-toastify';
-import Grow from '@material-ui/core/Grow';
 import MUIDataTable from "mui-datatables";
 import { Paper, withStyles } from '@material-ui/core';
 import FormDialogSelectButton from "./FormDialogSelectButton";
 import axios from "axios";
 
-const Transition = React.forwardRef(function Transition(props, ref) {
-  return <Grow ref={ref} {...props} />;
-});
 const styles = theme => ({
     paperTable: {
         padding: theme.spacing(0),
@@ -27,53 +13,34 @@ const styles = theme => ({
     },
 })
 const FormDialogSelectDepartment =({ classes, ...props }) => {
-  const [open, setOpen] = useState(false);
   const [getData, setGetData] = useState([]);
 
   useEffect(() => {
-    axios.get('http://localhost:5000/department/list_super',{withCredentials:true})
+    axios.get('http://localhost:5000/superadmin/list_super',{withCredentials:true})
     .then(res=>{
         console.log(res.data)
-        setGetData(res.data.list)
+        let newList=[]
+        for(let i=0;i<res.data.list.length;i++){
+            res.data.list[i].subAdmins=Object.values(res.data.list[i].subAdmins).map((i)=>i.email)
+            newList.push(Object.values(res.data.list[i]))           
+        }
+        setGetData(newList)
     })
     .catch(err=>{
         console.log(err)
     })
-}, [])
+   }, [])
 
-  const handleOpen = () => {
-      setOpen(true);
-  }
-
-  const handleClose = () => {
-      setOpen(false);
-  }
-
-  const handleDept=()=>{
-      
-  }
-
-  const handleSubmit = (e) => {
-      const onSuccess = () => {
-          props.refresh()
-          props.handleSelectDept()
-          setOpen(false);
-          toast.success('Department Selected');
-      }
-      e.preventDefault();
-
-     
-  }
   const columns = [
-    {
-        name: "id",
-        label: "ID",
-        options: {
-            display: false,
-            filter: false,
-            sort: false,
-        }
-    },
+    // {
+    //     name: "id",
+    //     label: "ID",
+    //     options: {
+    //         display: false,
+    //         filter: false,
+    //         sort: false,
+    //     }
+    // },
     {
         // left side of first column is too close with the container, give more space on it
         name: "name",
@@ -107,11 +74,19 @@ const FormDialogSelectDepartment =({ classes, ...props }) => {
         
     },
     // {
-    //     name: "register_date",
-    //     label: "Register Date",
+    //     name: "SubAdmin Emails",
     //     options: {
-    //         filter: false,
+    //         filter: true,
     //         sort: false,
+    //         customBodyRender: (value) => {
+    //             console.log(value)
+    //             return(<div>
+    //                 {value.map((i)=><span style={{"backgroundColor":"rgba(0, 0, 0, 0.08)","borderRadius":"16px","padding":"0.5rem"}}>
+    //                     {i}
+    //                     </span>)}
+    //                  </div>
+    //             )
+    //           },
     //     }
     // },
     {
@@ -124,7 +99,7 @@ const FormDialogSelectDepartment =({ classes, ...props }) => {
                 return (
                         <div style={{display:"flex", flexDirection:"row", justifyContent:"flex-end"}}>
                             <FormDialogSelectButton component={Paper}  
-                                create={props.create} handleDept={()=>props.handleDept(tableMeta.rowData[1])}
+                                create={props.create} handleDept={()=>props.handleDept(tableMeta.rowData[0])}
                             />
                         </div>
                 );
@@ -157,6 +132,5 @@ const FormDialogSelectDepartment =({ classes, ...props }) => {
     </div>
   );
 }
-
 
 export default (withStyles(styles)(FormDialogSelectDepartment));

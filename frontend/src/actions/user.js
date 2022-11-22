@@ -1,3 +1,4 @@
+/* eslint-disable */
 import API from "../utils/api";
 
 export const ACTION_TYPES = {
@@ -20,7 +21,7 @@ export const fetchAll = () => dispatch => {
         .catch(err => console.log(err))
 }
 
-export const Pagination = (page = 1, limit = 10,access, name = "", email = "") => dispatch => {
+export const Pagination = (page = 1, limit = 10,url, name = "", email = "") => dispatch => {
     // API.user().fetchPagination(page, Math.abs(limit), name, email)
     //     .then(res =>{
     //         dispatch({
@@ -29,14 +30,6 @@ export const Pagination = (page = 1, limit = 10,access, name = "", email = "") =
     //         })
     //     })
     //     .catch(err => console.log(err))
-    let url="";
-    if(access=='GodLevel')
-    url='department/list_god'
-    else if(access=='SuperAdmin')
-    url='department/list_sub_admins/'+name
-    else if(access=='SubAdmin')
-    url='department/list_sub'
-    else url=""
     API.user(url).fetchAll()
         .then(res =>{
             console.log(res)
@@ -60,38 +53,40 @@ export const fetchById = (id, onSuccess) => dispatch => {
         .catch(err => console.log(err))
 }
 
-export const create = (input, onSuccess) => dispatch => {
-    API.user().create(input)
+export const create = (input, onSuccess,url) => dispatch => {
+    
+    API.user(url).create(input)
         .then(res =>{
             dispatch({
                 type: ACTION_TYPES.USER_CREATE,
                 payload: res.data
             })
-            onSuccess()
+            onSuccess(res.data.message)
         })
         .catch(err => console.log(err))
 }
 
-export const update = (id, input, onSuccess) => dispatch => {
-    API.user().update(id, input)
+export const update = (input, onSuccess,url) => dispatch => {
+    API.user(url).update(input)
         .then(res =>{
             dispatch({
                 type: ACTION_TYPES.USER_UPDATE,
                 payload: res.data
             })
-            onSuccess()
+            onSuccess(res.data.message)
         })
         .catch(err => console.log(err))
 }
 
-export const Delete = (id, onSuccess) => dispatch => {
-    API.user().delete(id)
+export const Delete = (id, onSuccess,url) => dispatch => {
+    API.user(url).delete(id)
         .then(res =>{
             dispatch({
                 type: ACTION_TYPES.USER_DELETE,
-                payload: res.data.id
+                payload: res.data
             })
-            onSuccess()
+            console.log(res.data)
+            onSuccess(res.data.message)
         })
         .catch(err => console.log(err))
 }

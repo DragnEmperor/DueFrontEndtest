@@ -6,7 +6,7 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import { IconButton } from "@material-ui/core";
-import EditIcon from "@material-ui/icons/Edit";
+import AddCircleIcon from "@material-ui/icons/AddCircle";
 import { toast } from "react-toastify";
 import Grow from "@material-ui/core/Grow";
 
@@ -17,22 +17,17 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 const initialFormState = {
   id: null,
   name: "",
-  email: "",
-  confirm_password: "",
+  AdminEmail: "",
 };
 
-const FormDialogEditUser = props => {
+const FormDialogAddUser = props => {
   const [open, setOpen] = useState(false);
   const [user, setUser] = useState(initialFormState);
   const [errors, setErrors] = useState({});
 
   const handleClickOpen = () => {
     setErrors({});
-    setUser({
-      id: props.dataUser[0],
-      name: props.dataUser[1],
-      email: props.dataUser[2],
-    });
+    setUser(initialFormState);
     setOpen(true);
   };
 
@@ -54,22 +49,17 @@ const FormDialogEditUser = props => {
       tempErrors["name"] = "Cannot be empty";
     }
 
-    if (!user.email || user.email.trim() === "") {
+    if (!user.AdminEmail || user.AdminEmail.trim() === "") {
       formIsValid = false;
-      tempErrors["email"] = "Cannot be empty";
+      tempErrors["AdminEmail"] = "Cannot be empty";
     }
 
     let regexp = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     // let re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
-    if (!regexp.test(user.email)) {
+    if (!regexp.test(user.AdminEmail)) {
       formIsValid = false;
-      tempErrors["email"] = "Email is not valid";
-    }
-
-    if(user.confirm_password !== user.password ){
-      formIsValid = false;
-      tempErrors["password"] = "Passwords are not same";
+      tempErrors["AdminEmail"] = "Email is not valid";
     }
 
     setErrors(tempErrors);
@@ -77,21 +67,25 @@ const FormDialogEditUser = props => {
   };
 
   const handleSubmit = e => {
-    const onSuccess = () => {
+    const onSuccess = (msg) => {
+      props.refresh()
       setOpen(false);
-      toast.success("Data succesfully updated");
+      if(msg=="Department created" || msg=="Sub-admin added" ||msg=="Student added")
+      toast.success(msg);
+      else
+      toast.error(msg);
     };
     e.preventDefault();
 
     if (validate()) {
-      props.update(user.id, user, onSuccess);
+      props.create(user,onSuccess,props.url);
     }
   };
 
   return (
     <div>
       <IconButton color="primary" onClick={handleClickOpen}>
-        <EditIcon />
+        <AddCircleIcon style={{ fontSize: "40px" }} />
       </IconButton>
       <Dialog
         open={open}
@@ -103,10 +97,23 @@ const FormDialogEditUser = props => {
           id="form-dialog-title"
           style={{ padding: "30px 30px 0px 30px" }}
         >
-          Edit User
+          Add Department
         </DialogTitle>
 
         <DialogContent style={{ padding: "30px 30px 10px 30px" }}>
+          <TextField
+            autoFocus
+            name="id"
+            label="Id"
+            value={user.id}
+            fullWidth
+            onChange={handleInputChange}
+            {...(errors.name && { error: true, helperText: errors.name })}
+          />
+
+          <br />
+          <br />
+
           <TextField
             autoFocus
             name="name"
@@ -116,41 +123,17 @@ const FormDialogEditUser = props => {
             onChange={handleInputChange}
             {...(errors.name && { error: true, helperText: errors.name })}
           />
+
           <br />
           <br />
+
           <TextField
-            name="email"
-            label="Email"
-            value={user.email}
+            name="AdminEmail"
+            label="Admin Email"
+            value={user.AdminEmail}
             fullWidth
             onChange={handleInputChange}
-            {...(errors.email && { error: true, helperText: errors.email })}
-          />
-          <br />
-          <br />
-          <TextField
-            name="password"
-            label="Password"
-            value={user.password}
-            fullWidth
-            onChange={handleInputChange}
-            {...(errors.password && {
-              error: true,
-              helperText: errors.password,
-            })}
-          />
-          <br /> <br />
-          <TextField
-            name="confirm-password"
-            label="Confirm Password"
-            // logic to validate password again
-            value={user.confirm_password}
-            fullWidth
-            onChange={handleInputChange}
-            {...(errors.password && {
-              error: true,
-              helperText: errors.password,
-            })}
+            {...(errors.AdminEmail && { error: true, helperText: errors.AdminEmail })}
           />
         </DialogContent>
 
@@ -167,4 +150,4 @@ const FormDialogEditUser = props => {
   );
 };
 
-export default FormDialogEditUser;
+export default FormDialogAddUser;

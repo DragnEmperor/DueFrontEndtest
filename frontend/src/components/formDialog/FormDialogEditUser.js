@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import Dialog from "@material-ui/core/Dialog";
@@ -17,8 +17,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 const initialFormState = {
   id: null,
   name: "",
-  email: "",
-  confirm_password: "",
+  newSuperAdminEmail: "",
 };
 
 const FormDialogEditUser = props => {
@@ -29,9 +28,9 @@ const FormDialogEditUser = props => {
   const handleClickOpen = () => {
     setErrors({});
     setUser({
-      id: props.dataUser[0],
-      name: props.dataUser[1],
-      email: props.dataUser[2],
+      id: "",
+      name: props.dataUser[0],
+      newSuperAdminEmail: props.dataUser[1],
     });
     setOpen(true);
   };
@@ -54,7 +53,7 @@ const FormDialogEditUser = props => {
       tempErrors["name"] = "Cannot be empty";
     }
 
-    if (!user.email || user.email.trim() === "") {
+    if (!user.newSuperAdminEmail || user.newSuperAdminEmail.trim() === "") {
       formIsValid = false;
       tempErrors["email"] = "Cannot be empty";
     }
@@ -62,14 +61,9 @@ const FormDialogEditUser = props => {
     let regexp = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     // let re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
-    if (!regexp.test(user.email)) {
+    if (!regexp.test(user.newSuperAdminEmail)) {
       formIsValid = false;
       tempErrors["email"] = "Email is not valid";
-    }
-
-    if(user.confirm_password !== user.password ){
-      formIsValid = false;
-      tempErrors["password"] = "Passwords are not same";
     }
 
     setErrors(tempErrors);
@@ -77,14 +71,18 @@ const FormDialogEditUser = props => {
   };
 
   const handleSubmit = e => {
-    const onSuccess = () => {
+    const onSuccess = (msg) => {
+      props.refresh()
       setOpen(false);
-      toast.success("Data succesfully updated");
+      if(msg=="Super-admin changed" || msg=="Sub-admin changed")
+      toast.success(msg);
+      else
+      toast.error(msg);
     };
     e.preventDefault();
 
     if (validate()) {
-      props.update(user.id, user, onSuccess);
+      props.update(user, onSuccess,props.url);
     }
   };
 
@@ -109,6 +107,19 @@ const FormDialogEditUser = props => {
         <DialogContent style={{ padding: "30px 30px 10px 30px" }}>
           <TextField
             autoFocus
+            name="id"
+            label="Id"
+            value={user.id}
+            fullWidth
+            onChange={handleInputChange}
+            {...(errors.name && { error: true, helperText: errors.name })}
+          />
+
+          <br />
+          <br />
+
+          <TextField
+            autoFocus
             name="name"
             label="Name"
             value={user.name}
@@ -116,41 +127,17 @@ const FormDialogEditUser = props => {
             onChange={handleInputChange}
             {...(errors.name && { error: true, helperText: errors.name })}
           />
+
           <br />
           <br />
+
           <TextField
-            name="email"
-            label="Email"
-            value={user.email}
+            name="newSuperAdminEmail"
+            label="Super Admin Email"
+            value={user.newSuperAdminEmail}
             fullWidth
             onChange={handleInputChange}
             {...(errors.email && { error: true, helperText: errors.email })}
-          />
-          <br />
-          <br />
-          <TextField
-            name="password"
-            label="Password"
-            value={user.password}
-            fullWidth
-            onChange={handleInputChange}
-            {...(errors.password && {
-              error: true,
-              helperText: errors.password,
-            })}
-          />
-          <br /> <br />
-          <TextField
-            name="confirm-password"
-            label="Confirm Password"
-            // logic to validate password again
-            value={user.confirm_password}
-            fullWidth
-            onChange={handleInputChange}
-            {...(errors.password && {
-              error: true,
-              helperText: errors.password,
-            })}
           />
         </DialogContent>
 

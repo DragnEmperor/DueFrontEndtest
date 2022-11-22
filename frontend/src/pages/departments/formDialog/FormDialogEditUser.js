@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import Dialog from "@material-ui/core/Dialog";
@@ -17,7 +17,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 const initialFormState = {
   id: null,
   name: "",
-  superAdminEmail: "",
+  newSuperAdminEmail: "",
 };
 
 const FormDialogEditUser = props => {
@@ -28,9 +28,9 @@ const FormDialogEditUser = props => {
   const handleClickOpen = () => {
     setErrors({});
     setUser({
-      id: props.dataUser[0],
-      name: props.dataUser[1],
-      superAdminEmail: props.dataUser[2],
+      id: "",
+      name: props.dataUser[0],
+      newSuperAdminEmail: props.dataUser[1],
     });
     setOpen(true);
   };
@@ -53,7 +53,7 @@ const FormDialogEditUser = props => {
       tempErrors["name"] = "Cannot be empty";
     }
 
-    if (!user.superAdminEmail || user.superAdminEmail.trim() === "") {
+    if (!user.newSuperAdminEmail || user.newSuperAdminEmail.trim() === "") {
       formIsValid = false;
       tempErrors["email"] = "Cannot be empty";
     }
@@ -61,7 +61,7 @@ const FormDialogEditUser = props => {
     let regexp = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     // let re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
-    if (!regexp.test(user.superAdminEmail)) {
+    if (!regexp.test(user.newSuperAdminEmail)) {
       formIsValid = false;
       tempErrors["email"] = "Email is not valid";
     }
@@ -72,16 +72,17 @@ const FormDialogEditUser = props => {
 
   const handleSubmit = e => {
     const onSuccess = (msg) => {
+      props.refresh()
       setOpen(false);
-      if(msg==="success")
-      toast.success("Department succesfully updated");
+      if(msg==="Super-admin changed")
+      toast.success("Super-Admin succesfully updated");
       else
       toast.error(msg);
     };
     e.preventDefault();
 
     if (validate()) {
-      props.update(user.id, user, onSuccess);
+      props.update(user, onSuccess,'GodLevel');
     }
   };
 
@@ -131,9 +132,9 @@ const FormDialogEditUser = props => {
           <br />
 
           <TextField
-            name="superAdminEmail"
-            label="Admin Email"
-            value={user.email}
+            name="newSuperAdminEmail"
+            label="Super Admin Email"
+            value={user.newSuperAdminEmail}
             fullWidth
             onChange={handleInputChange}
             {...(errors.email && { error: true, helperText: errors.email })}

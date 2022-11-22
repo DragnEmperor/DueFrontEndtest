@@ -17,7 +17,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 const initialFormState = {
   id: null,
   name: "",
-  superAdminEmail: "",
+  AdminEmail: "",
 };
 
 const FormDialogAddUser = props => {
@@ -49,17 +49,17 @@ const FormDialogAddUser = props => {
       tempErrors["name"] = "Cannot be empty";
     }
 
-    if (!user.superAdminEmail || user.superAdminEmail.trim() === "") {
+    if (!user.AdminEmail || user.AdminEmail.trim() === "") {
       formIsValid = false;
-      tempErrors["superAdminEmail"] = "Cannot be empty";
+      tempErrors["AdminEmail"] = "Cannot be empty";
     }
 
     let regexp = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     // let re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
-    if (!regexp.test(user.superAdminEmail)) {
+    if (!regexp.test(user.AdminEmail)) {
       formIsValid = false;
-      tempErrors["superAdminEmail"] = "Email is not valid";
+      tempErrors["AdminEmail"] = "Email is not valid";
     }
 
     setErrors(tempErrors);
@@ -68,8 +68,9 @@ const FormDialogAddUser = props => {
 
   const handleSubmit = e => {
     const onSuccess = (msg) => {
+      props.refresh()
       setOpen(false);
-      if(msg==="success")
+      if(msg=="Department created")
       toast.success("Department succesfully updated");
       else
       toast.error(msg);
@@ -77,7 +78,7 @@ const FormDialogAddUser = props => {
     e.preventDefault();
 
     if (validate()) {
-      props.create(user,onSuccess);
+      props.create(user,onSuccess,props.url);
     }
   };
 
@@ -127,12 +128,12 @@ const FormDialogAddUser = props => {
           <br />
 
           <TextField
-            name="superAdminEmail"
+            name="AdminEmail"
             label="Admin Email"
-            value={user.superAdminEmail}
+            value={user.AdminEmail}
             fullWidth
             onChange={handleInputChange}
-            {...(errors.superAdminEmail && { error: true, helperText: errors.superAdminEmail })}
+            {...(errors.AdminEmail && { error: true, helperText: errors.AdminEmail })}
           />
         </DialogContent>
 

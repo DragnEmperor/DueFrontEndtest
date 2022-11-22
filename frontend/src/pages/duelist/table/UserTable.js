@@ -3,9 +3,10 @@ import { Paper, withStyles } from '@material-ui/core';
 import MUIDataTable from "mui-datatables";
 import { connect } from "react-redux";
 import * as actions from "../../../actions/user";
-import FormDialogAddUser from "../formDialog/FormDialogAddUser";
-import FormDialogEditUser from "../formDialog/FormDialogEditUser";
-import FormDialogDeleteUser from "../formDialog/FormDialogDeleteUser";
+import FormDialogAddUser from "../../../components/formDialog/FormDialogAddUser";
+import FormDialogEditUser from "../../../components/formDialog/FormDialogEditUser";
+import FormDialogDeleteUser from "../../../components/formDialog/FormDialogDeleteUser";
+import FormDialogSelectDepartment from "../../../components/formDialog/FormDialogSelectDepartment";
 
 const styles = theme => ({
     paperTable: {
@@ -16,10 +17,13 @@ const styles = theme => ({
 const UserTable = ({ classes, ...props }) => {
     const [page, setPage] = useState(0)
     const [rowsPerPage, setRowsPerPage] = useState(5)
+    const [selectDept,setSelectDept]=useState(true)
+    const [deptName,setDeptName]=useState("")
 
     useEffect(() => {
-        // props.fetchPagination(1, rowsPerPage)
-    }, [])
+        if(deptName!=="" && deptName!==null)
+        props.fetchPagination(1,rowsPerPage,'/list_students/'+deptName)
+    }, [deptName])
 
     const handleChangePage = async (newPage) => {
         await setPage(newPage);
@@ -60,7 +64,7 @@ const UserTable = ({ classes, ...props }) => {
         {
             // left side of first column is too close with the container, give more space on it
             name: "name",
-            label: "Name",
+            label: "Student Name",
             options: {
                 filter: true,
                 sort: false,
@@ -91,7 +95,7 @@ const UserTable = ({ classes, ...props }) => {
         },
         {
             name: "amount",
-            label: "Amount",
+            label: "Due Amount",
             options: {
                 filter: true,
                 sort: false,

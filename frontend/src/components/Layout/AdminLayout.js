@@ -77,12 +77,12 @@ function AdminLayout(props) {
                 <Route path="/admin/map/edit/:id" component={EditForm} />
 
                 <Route exact path="/admin/user/" component={User} />
-                <Route exact path="/admin/subadmins/" component={authUser && authUser.subAdminRightsOf.length!=0?Subadmin:Logout} />
-                <Route exact path="/admin/superadmin/" component={authUser && authUser.superAdminRightsOf.length!=0?Superadmin:Logout} />
+                <Route exact path="/admin/subadmins/" component={authUser && (authUser.isGodLevelAdmin || authUser.superAdminRightsOf.length!=0)?Subadmin:Logout} />
+                {/* <Route exact path="/admin/superadmin/" component={authUser && (authUser.isGodLevelAdmin || authUser.superAdminRightsOf.length!=0)?Superadmin:Logout} /> */}
                 <Route exact path="/admin/departments/" component={authUser && authUser.isGodLevelAdmin?Department:Logout} />
                 <Route exact path="/admin/duebin/" component={Duebin} />
                 <Route exact path="/admin/duelist/" component={Duelist} />
-
+                <Route exact path="/admin/setdepartment/" component={Superadmin} />
                 <UserProvider>
                   <Route exact path="/admin/usercontext" component={UserWithContext} />
                   <Route path="/admin/usercontext/add" component={AddUserForm} />

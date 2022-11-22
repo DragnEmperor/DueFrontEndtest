@@ -28,7 +28,7 @@ import {
 const structure = [
   // { id: 0, label: "Dashboard", link: "/admin/dashboard", icon: <HomeIcon /> },
   { id: 1, label: "Departments", link: "/admin/departments", icon: <AccountIcon /> },
-  { id: 5, label: "Super Admin", link: "/admin/superadmin", icon: <AccountIcon /> },
+  // { id: 5, label: "Super Admin", link: "/admin/superadmin", icon: <AccountIcon /> },
   { id: 2, label: "Sub Admins", link: "/admin/subadmins", icon: <AccountIcon /> },
   { id: 3, label: "Due List", link: "/admin/duelist", icon: <AccountIcon /> },
   { id: 4, label: "Due Bin", link: "/admin/duebin", icon: <AccountIcon /> },

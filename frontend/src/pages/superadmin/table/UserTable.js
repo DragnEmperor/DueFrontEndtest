@@ -3,11 +3,11 @@ import { Paper, withStyles } from '@material-ui/core';
 import MUIDataTable from "mui-datatables";
 import { connect } from "react-redux";
 import * as actions from "../../../actions/user";
-import FormDialogAddUser from "../formDialog/FormDialogAddUser";
-import FormDialogEditUser from "../formDialog/FormDialogEditUser";
-import FormDialogDeleteUser from "../formDialog/FormDialogDeleteUser";
-import FormDialogActivateDeactivateUser from "../formDialog/FormDialogActivateDeactivateUser";
-import FormDialogSelectDepartment from "../formDialog/FormDialogSelectDepartment";
+import FormDialogAddUser from "../../../components/formDialog/FormDialogAddUser";
+import FormDialogEditUser from "../../../components/formDialog/FormDialogEditUser";
+import FormDialogDeleteUser from "../../../components/formDialog/FormDialogDeleteUser";
+// import FormDialogActivateDeactivateUser from "../../../components/formDialog/FormDialogActivateDeactivateDepartment";
+import FormDialogSelectDepartment from "../../../components/formDialog/FormDialogSelectDepartment";
 
 const styles = theme => ({
     paperTable: {
@@ -25,8 +25,8 @@ const UserTable = ({ classes, ...props }) => {
     const [deptName,setDeptName]=useState("")
 
     useEffect(() => {
-        console.log(localStorage.getItem('authDueUser'))
-        props.fetchPagination(1,rowsPerPage,'SuperAdmin',deptName)
+        if(deptName!=="" && deptName!==null)
+        props.fetchPagination(1,rowsPerPage,'superadmin/list_students/'+deptName)
     }, [deptName])
      
     const handleSelectDept=()=>{
@@ -39,28 +39,28 @@ const UserTable = ({ classes, ...props }) => {
     }
     const handleChangePage = async (newPage) => {
         await setPage(newPage);
-        props.fetchPagination(newPage + 1, rowsPerPage,'SuperAdmin')
+        props.fetchPagination(newPage + 1, rowsPerPage,'superadmin/list_students/')
     };
 
     const handleChangeRowsPerPage = async (rowsPerPage) => {
         await setRowsPerPage(rowsPerPage);
         await setPage(0);
-        props.fetchPagination(1, rowsPerPage,'SuperAdmin')
+        props.fetchPagination(1, rowsPerPage,'superadmin/list_students/')
     };
 // 
     const handleSearch = async (searchText) => {
         await setPage(0);
-        props.fetchPagination(1, rowsPerPage,'SuperAdmin', searchText, searchText)
+        props.fetchPagination(1, rowsPerPage,'superadmin/list_students/', searchText, searchText)
     };
 
     const handleFilterChange = async (name, email) => {
         await setPage(0);
-        props.fetchPagination(1, rowsPerPage,'SuperAdmin', name, email)
+        props.fetchPagination(1, rowsPerPage,'superadmin/list_students/', name, email)
     };
 
     const refresh = async () => {
         await setPage(0);
-        props.fetchPagination(1, rowsPerPage,'SuperAdmin')
+        props.fetchPagination(1, rowsPerPage,'superadmin/list_students/'+deptName)
     }
     
     const columns = [
@@ -76,7 +76,7 @@ const UserTable = ({ classes, ...props }) => {
         {
             // left side of first column is too close with the container, give more space on it
             name: "displayName",
-            label: "Department Name",
+            label: "Student Name",
             options: {
                 filter: true,
                 sort: false,
@@ -106,8 +106,8 @@ const UserTable = ({ classes, ...props }) => {
             
         },
         {
-            name: "email",
-            label: "SubAdmin Email",
+            name: "dueValue",
+            label: "Dues",
             options: {
                 filter: true,
                 sort: false,
@@ -134,6 +134,7 @@ const UserTable = ({ classes, ...props }) => {
                                 <FormDialogAddUser component={Paper}  
                                     create={props.create}
                                     refresh={refresh}
+                                    url='superadmin/add_student'
                                 />
                             </div>
                         </th>
@@ -145,16 +146,20 @@ const UserTable = ({ classes, ...props }) => {
                             <FormDialogEditUser
                                 dataUser={tableMeta.rowData}
                                 update={props.update}
+                                refresh={refresh}
+                                url='superadmin/change_sub_admin'
                             />
-                            <FormDialogActivateDeactivateUser
+                            {/* <FormDialogActivateDeactivateUser
                                 dataUser={tableMeta.rowData}
                                 // change to activate/deactivate
                                 update={props.update}
-                            />
+                            /> */}
                             <FormDialogDeleteUser 
                                 dataUser={tableMeta.rowData}
                                 delete={props.delete}
                                 refresh={refresh}
+                                url='superadmin/revoke_sub_admin'
+                                isGodlevel={false}
                             />
                         </div>
                     );
@@ -208,7 +213,8 @@ const UserTable = ({ classes, ...props }) => {
     return (
         (selectDept ? 
             (<Paper className={classes.paper}>
-                <FormDialogSelectDepartment handleSelectDept={handleSelectDept} handleDept={handledeptName}/>
+                <FormDialogSelectDepartment handleSelectDept={handleSelectDept} handleDept={handledeptName} delete={props.delete}
+                update={props.update} create={props.create}/>
             </Paper>)
         :
         <MUIDataTable className={classes.paperTable}

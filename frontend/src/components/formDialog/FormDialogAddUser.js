@@ -24,7 +24,7 @@ const FormDialogAddUser = props => {
   const [open, setOpen] = useState(false);
   const [user, setUser] = useState(initialFormState);
   const [errors, setErrors] = useState({});
-
+  const [file, selectFile] = useState(null);
   const handleClickOpen = () => {
     setErrors({});
     setUser(initialFormState);
@@ -76,9 +76,10 @@ const FormDialogAddUser = props => {
       toast.error(msg);
     };
     e.preventDefault();
-
+    const name=JSON.parse(localStorage.getItem('setDueDepartment'));
+    const newAdminEmail = user.AdminEmail;
     if (validate()) {
-      props.create(user,onSuccess,props.url);
+      props.create({name,user,newAdminEmail},onSuccess,props.url);
     }
   };
 
@@ -137,6 +138,7 @@ const FormDialogAddUser = props => {
             onChange={handleInputChange}
             {...(errors.AdminEmail && { error: true, helperText: errors.AdminEmail })}
           />
+           {props.for==="Student" && <input  type="file" value={file} onChange={e=>selectFile(e.target.value[0])}/>}
         </DialogContent>
 
         <DialogActions style={{ padding: 30 }}>

@@ -21,8 +21,10 @@ const UserTable = ({ classes, ...props }) => {
     const [deptName,setDeptName]=useState("")
 
     useEffect(() => {
-        if(deptName!=="" && deptName!==null)
-        props.fetchPagination(1,rowsPerPage,'superadmin/list_subadmins/'+deptName)
+        if(deptName!=="" && deptName!==null);
+        console.log(deptName);
+        props.fetchPagination(1,rowsPerPage,'department/list_sub_admins/'+deptName);
+        console.log("users : ",props);
     }, [deptName])
 
     useEffect(() => {
@@ -55,7 +57,7 @@ const UserTable = ({ classes, ...props }) => {
 
     const refresh = async () => {
         await setPage(0);
-        props.fetchPagination(1, rowsPerPage,'/list_subadmins/'+deptName)
+        props.fetchPagination(1, rowsPerPage,'department/list_sub_admins/'+deptName)
     }
     
     const columns = [
@@ -71,7 +73,7 @@ const UserTable = ({ classes, ...props }) => {
         {
             // left side of first column is too close with the container, give more space on it
             name: "name",
-            label: "Student Name",
+            label: "Id",
             options: {
                 filter: true,
                 sort: false,
@@ -101,8 +103,8 @@ const UserTable = ({ classes, ...props }) => {
             
         },
         {
-            name: "dueValue",
-            label: "Dues",
+            name: "displayName",
+            label: "SubAdmin Name",
             options: {
                 filter: true,
                 sort: false,

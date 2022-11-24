@@ -24,7 +24,7 @@ const UserTable = ({ classes, ...props }) => {
         if(deptName!=="" && deptName!==null);
         console.log(deptName);
         props.fetchPagination(1,rowsPerPage,'department/list_sub_admins/'+deptName);
-        console.log("users : ",props);
+        console.log("users : ",props.users);
     }, [deptName])
 
     useEffect(() => {
@@ -62,7 +62,7 @@ const UserTable = ({ classes, ...props }) => {
     
     const columns = [
         {
-            name: "id",
+            name: "email",
             label: "ID",
             options: {
                 display: false,
@@ -73,7 +73,7 @@ const UserTable = ({ classes, ...props }) => {
         {
             // left side of first column is too close with the container, give more space on it
             name: "name",
-            label: "Id",
+            label: "Sub Admin Names",
             options: {
                 filter: true,
                 sort: false,
@@ -103,21 +103,14 @@ const UserTable = ({ classes, ...props }) => {
             
         },
         {
-            name: "displayName",
-            label: "SubAdmin Name",
+            name: "email",
+            label: "SubAdmin Emails",
             options: {
                 filter: true,
                 sort: false,
             }
         },
-        {
-            name: "register_date",
-            label: "Register Date",
-            options: {
-                filter: false,
-                sort: false,
-            }
-        },
+    
         {
             name: "",
             options: {
@@ -144,16 +137,8 @@ const UserTable = ({ classes, ...props }) => {
                 customBodyRender: (value, tableMeta, updateValue) => {
                     return (
                         <div style={{display:"flex", flexDirection:"row", justifyContent:"flex-end"}}>
-                            <FormDialogEditUser
-                                dataUser={tableMeta.rowData}
-                                update={props.update}
-                                url='superadmin/change_sub_admin'
-                            />
-                            {/* <FormDialogActivateDeactivateUser
-                                dataUser={tableMeta.rowData}
-                                // change to activate/deactivate
-                                update={props.update}
-                            /> */}
+                            
+                           
                             <FormDialogDeleteUser 
                                 dataUser={tableMeta.rowData}
                                 delete={props.delete}
@@ -209,7 +194,7 @@ const UserTable = ({ classes, ...props }) => {
             }
         },
     };
-    
+    console.log(" users : ", props.users);
     return (
         <MUIDataTable
         title={"Department : "+deptName}

@@ -35,8 +35,7 @@ export const Pagination = (page = 1, limit = 10,url, name = "", email = "") => d
             console.log("fetched : ",res)
             dispatch({
                 type: ACTION_TYPES.USER_FETCH_ALL,
-                payload: res.data.list.name? res.data.list.subAdmins
-                : res.data.list
+                payload:  res.data.list
             })
         })
         .catch(err => console.log(err))

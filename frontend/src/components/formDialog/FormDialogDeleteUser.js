@@ -131,11 +131,12 @@ const FormDialogDeleteUser = (props) => {
                 label="Age"
                 onChange={handleChange}
               >
-                {email && email.map((i) => (
-                  <MenuItem key={i} value={i}>
-                    <ListItemText primary={i} />
+                {email && 
+                  <MenuItem key={email} value={email}>
+                    <ListItemText primary={email} />
                   </MenuItem>
-                ))}
+                }
+              
               </Select>
               </FormControl>
               </DialogContent>

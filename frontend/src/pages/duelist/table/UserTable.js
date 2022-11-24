@@ -3,8 +3,8 @@ import { Paper, withStyles } from '@material-ui/core';
 import MUIDataTable from "mui-datatables";
 import { connect } from "react-redux";
 import * as actions from "../../../actions/user";
-import FormDialogAddUser from "../../../components/formDialog/FormDialogAddUser";
-import FormDialogEditUser from "../../../components/formDialog/FormDialogEditUser";
+import FormDialogAddUser from "../../../components/formDialog/FormAddStudent";
+import FormDialogEditUser from "../../../components/formDialog/FormDialogEditStudent";
 import FormDialogDeleteUser from "../../../components/formDialog/FormDialogDeleteUser";
 import FormDialogSelectButton from "../../../components/formDialog/FormDialogSelectButton";
 
@@ -20,8 +20,10 @@ const UserTable = ({ classes, ...props }) => {
     const [deptName,setDeptName]=useState("")
 
     useEffect(() => {
-        if(deptName!=="" && deptName!==null)
-        props.fetchPagination(1,rowsPerPage,'/list_students/'+deptName)
+        if(deptName!=="" && deptName!==null){
+            console.log("Called API");
+            props.fetchPagination(1,rowsPerPage,'due/show_students/'+ deptName)
+        }
     }, [deptName])
 
     useEffect(() => {
@@ -52,14 +54,14 @@ const UserTable = ({ classes, ...props }) => {
         // props.fetchPagination(1, rowsPerPage, name, email)
     };
 
-    const refresh = async () => {
-        await setPage(0);
-        props.fetchPagination(1, rowsPerPage,'/list_students/'+deptName)
+    const refresh =  () => {
+        setPage(0);
+        props.fetchPagination(1,rowsPerPage,'due/show_students/'+ deptName);
     }
     
     const columns = [
         {
-            name: "id",
+            name: "Roll Number",
             label: "Roll Number",
             options: {
                 display: true,
@@ -67,42 +69,43 @@ const UserTable = ({ classes, ...props }) => {
                 sort: false,
             }
         },
-        {
-            // left side of first column is too close with the container, give more space on it
-            name: "name",
-            label: "Student Name",
-            options: {
-                filter: true,
-                sort: false,
-                customHeadRender: (columnMeta, handleToggleColumn) => {
-                    return (
-                        <th key={columnMeta.index} 
-                            style={{
-                                paddingLeft: "31px", 
-                                fontWeight:500, 
-                                borderBottom: "1px solid rgba(224, 224, 224, .5)" 
-                                }}
-                        >
-                            <div style={{display:"flex", flexDirection:"row", justifyContent:"flex-start"}}>
-                                {columnMeta.label}
-                            </div>
-                        </th>
-                    );
-                },
-                customBodyRender: (value, tableMeta, updateValue) => {
-                    return (
-                        <span style={{marginLeft:15}}>
-                            {value}
-                        </span>
-                    );
-                }
-            },
+        // {
+           
+        //     name: "name",
+        //     label: "Student Name",
+        //     options: {
+        //         filter: true,
+        //         sort: false,
+        //         customHeadRender: (columnMeta, handleToggleColumn) => {
+        //             return (
+        //                 <th key={columnMeta.index} 
+        //                     style={{
+        //                         paddingLeft: "31px", 
+        //                         fontWeight:500, 
+        //                         borderBottom: "1px solid rgba(224, 224, 224, .5)" 
+        //                         }}
+        //                 >
+        //                     <div style={{display:"flex", flexDirection:"row", justifyContent:"flex-start"}}>
+        //                         {columnMeta.label}
+        //                     </div>
+        //                 </th>
+        //             );
+        //         },
+        //         customBodyRender: (value, tableMeta, updateValue) => {
+        //             return (
+        //                 <span style={{marginLeft:15}}>
+        //                     {value}
+        //                 </span>
+        //             );
+        //         }
+        //     },
             
-        },
+        // },
         {
-            name: "amount",
+            name: "Amount",
             label: "Due Amount",
             options: {
+                display: true,
                 filter: true,
                 sort: false,
             }
@@ -120,6 +123,7 @@ const UserTable = ({ classes, ...props }) => {
                                 <FormDialogAddUser component={Paper}
                                     create={props.create}
                                     refresh={refresh}
+                                    url='due/add_single_student'
                                     for="Student"
                                 />
                                 <div>
@@ -135,7 +139,8 @@ const UserTable = ({ classes, ...props }) => {
                             <FormDialogEditUser
                                 dataUser={tableMeta.rowData}
                                 update={props.update}
-                                url='students/edit'
+                                url='due/set_due_amount'
+                                refresh={refresh}
                             />
                             <FormDialogDeleteUser 
                                 dataUser={tableMeta.rowData}

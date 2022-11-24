@@ -110,7 +110,7 @@ const UserTable = ({ classes, ...props }) => {
                                 <FormDialogAddUser component={Paper}  
                                     create={props.create}
                                     refresh={refresh}
-                                    url='department/create'
+                                    
                                     for="Department"
                                 />
                             </div>

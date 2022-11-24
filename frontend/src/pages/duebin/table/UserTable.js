@@ -18,7 +18,7 @@ const UserTable = ({ classes, ...props }) => {
     const [rowsPerPage, setRowsPerPage] = useState(5)
 
     useEffect(() => {
-        // props.fetchPagination(1, rowsPerPage)
+        props.fetchPagination(1, rowsPerPage, "due/show_students")
     }, [])
 
     const handleChangePage = async (newPage) => {

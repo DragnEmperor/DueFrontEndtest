@@ -11,6 +11,8 @@ import { toast } from "react-toastify";
 import Grow from "@material-ui/core/Grow";
 import AddIcon from "@material-ui/icons/Add";
 import { Fab  } from "@material-ui/core";
+import axios from 'axios';
+import FormData from 'form-data';
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Grow ref={ref} {...props} />;
 });
@@ -18,7 +20,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 const initialFormState = {
   id: null,
   name: "",
-  AdminEmail: "",
+  rollNumber: "",
 };
 
 const FormDialogAddUser = props => {
@@ -44,25 +46,20 @@ const FormDialogAddUser = props => {
   const validate = () => {
     let tempErrors = {};
     let formIsValid = true;
+    if(file.name==""){
 
+    
     if (!user.name || user.name.trim() === "") {
       formIsValid = false;
       tempErrors["name"] = "Cannot be empty";
     }
 
-    if (!user.AdminEmail || user.AdminEmail.trim() === "") {
+    if (!user.rollNumber || user.rollNumber.trim() === "") {
       formIsValid = false;
-      tempErrors["AdminEmail"] = "Cannot be empty";
+      tempErrors["rollNumber"] = "Cannot be empty";
     }
 
-    let regexp = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    // let re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-
-    if (!regexp.test(user.AdminEmail)) {
-      formIsValid = false;
-      tempErrors["AdminEmail"] = "Email is not valid";
-    }
-
+}
     setErrors(tempErrors);
     return formIsValid;
   };
@@ -77,16 +74,38 @@ const FormDialogAddUser = props => {
       toast.error(msg);
     };
     e.preventDefault();
-    const name=JSON.parse(localStorage.getItem('setDueDepartment'));
-    const newAdminEmail = user.AdminEmail;
+    const department=JSON.parse(localStorage.getItem('setDueDepartment'));
+    const rollNumber = user.rollNumber;
+    const hasDue = true;
     if (validate()) {
-      props.create({name,user,newAdminEmail},onSuccess,props.url);
+        if(file.name==""){
+
+            props.create({department,user,rollNumber,hasDue},onSuccess,props.url);
+        }
+        else{
+            const form = new FormData();
+            form.append("department",department);
+            console.log("here is call",file);
+            toast.success("file uploading");
+            form.append('studentRecord', file, 'data.xlsx');
+            axios.post("http://localhost:5000/due/uploadfile",form,{withCredentials: true}).then((res)=>{
+                console.log("res : ", res);
+                selectFile({name:""});
+                if(res.status===200){
+                    toast.success("file Uploaded successfully");
+                }
+                else{
+                    toast.error("Error in uploading file");
+                }
+                handleClose();
+            })
+        }
     }
   };
   function selectExelFile(e) {
     console.log( e.target.files[0].name.substring(e.target.files[0].name.length-4,e.target.files[0].name.length), e.target.files[0].name.substring(e.target.files[0].name.length-4,e.target.files[0].name.length) =="xlsx");
     if(e.target.files[0].name.substring(e.target.files[0].name.length-4,e.target.files[0].name.length) =="xlsx"){
-      toast.success("file uploading");
+      
       selectFile(e.target.files[0]);
     }
     else{
@@ -143,12 +162,12 @@ const FormDialogAddUser = props => {
           <br />
 
           <TextField
-            name="AdminEmail"
-            label="Admin Email"
-            value={user.AdminEmail}
+            name="rollNumber"
+            label="Roll No"
+            value={user.rollNumber}
             fullWidth
             onChange={handleInputChange}
-            {...(errors.AdminEmail && { error: true, helperText: errors.AdminEmail })}
+            {...(errors.rollNumber && { error: true, helperText: errors.rollNumber })}
           />
            {props.for==="Student" && <div style={{marginTop: "1.2rem", display:"flex", flexDirection:"column", alignItems: "center"}}>
 <p style={{marginBottom: "1.2rem",}}>OR</p>

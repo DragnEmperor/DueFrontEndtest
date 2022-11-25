@@ -16,7 +16,6 @@ class AuthProvider extends React.PureComponent {
     isAuthenticated = () => {
       const tken = this.state.token ? this.state.token : localStorage.getItem("myDuetoken")
       if (!tken) return false
-      console.log('token',tken)
       // const decoded = jwt(tken); 
       // console.log(decoded)
       // if (Date.now() / 1000 > decoded.exp - 5) {

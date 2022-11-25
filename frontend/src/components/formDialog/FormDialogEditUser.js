@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import Dialog from "@material-ui/core/Dialog";
@@ -105,7 +105,7 @@ const FormDialogEditUser = props => {
         </DialogTitle>
 
         <DialogContent style={{ padding: "30px 30px 10px 30px" }}>
-          <TextField
+          {/* <TextField
             autoFocus
             name="id"
             label="Id"
@@ -113,7 +113,7 @@ const FormDialogEditUser = props => {
             fullWidth
             onChange={handleInputChange}
             {...(errors.name && { error: true, helperText: errors.name })}
-          />
+          /> */}
 
           <br />
           <br />

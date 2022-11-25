@@ -124,7 +124,7 @@ const FormDialogAddUser = props => {
         </DialogTitle>
 
         <DialogContent style={{ padding: "30px 30px 10px 30px" }}>
-          <TextField
+          {/* <TextField
             autoFocus
             name="id"
             label="Id"
@@ -132,7 +132,7 @@ const FormDialogAddUser = props => {
             fullWidth
             onChange={handleInputChange}
             {...(errors.name && { error: true, helperText: errors.name })}
-          />
+          /> */}
 
           <br />
           <br />

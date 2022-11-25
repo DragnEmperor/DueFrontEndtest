@@ -68,7 +68,7 @@ const FormDialogAddUser = props => {
     const onSuccess = (msg) => {
       props.refresh()
       setOpen(false);
-      if(msg=="Department created" || msg=="Sub-admin added" ||msg=="Student added")
+      if(msg=="Success")
       toast.success(msg);
       else
       toast.error(msg);

@@ -29,7 +29,7 @@ const UserTable = ({ classes, ...props }) => {
     useEffect(() => {
         const getName=JSON.parse(localStorage.getItem('setDueDepartment'))
         if(!getName)
-        props.history.replace('/admin/setdepartment/')
+        props.history.push('/admin/setdepartment/')
         setDeptName(getName)
     }, [])
 
@@ -127,7 +127,7 @@ const UserTable = ({ classes, ...props }) => {
                                     for="Student"
                                 />
                                 <div>
-                                    <FormDialogSelectButton btnText='Change Department' handleDept={() => props.history.replace('/admin/setdepartment/')} />
+                                    <FormDialogSelectButton btnText='Change Department' handleDept={() => props.history.push('/admin/setdepartment/')} />
                                 </div>
                             </div>
                         </th>

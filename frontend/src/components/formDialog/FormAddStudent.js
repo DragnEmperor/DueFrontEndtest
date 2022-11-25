@@ -46,7 +46,7 @@ const FormDialogAddUser = props => {
   const validate = () => {
     let tempErrors = {};
     let formIsValid = true;
-    if(file.name==""){
+    if(file && file.name==""){
 
     
     if (!user.name || user.name.trim() === "") {
@@ -78,7 +78,7 @@ const FormDialogAddUser = props => {
     const rollNumber = user.rollNumber;
     const hasDue = true;
     if (validate()) {
-        if(file.name==""){
+        if(file && file.name==""){
 
             props.create({department,user,rollNumber,hasDue},onSuccess,props.url);
         }
@@ -187,7 +187,7 @@ const FormDialogAddUser = props => {
           variant="extended"
           style={{padding:"10px"}}
         >
-          {file.name==""? <><AddIcon /> Upload File</>  : file.name}
+          {file && file.name==""? <><AddIcon /> Upload File</>  : file.name}
           
         </Fab>
        

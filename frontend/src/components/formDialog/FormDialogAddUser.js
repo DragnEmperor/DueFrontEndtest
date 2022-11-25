@@ -77,10 +77,18 @@ const FormDialogAddUser = props => {
       toast.error(msg);
     };
     e.preventDefault();
-    const name=JSON.parse(localStorage.getItem('setDueDepartment'));
+    var name=JSON.parse(localStorage.getItem('setDueDepartment'));
     const newAdminEmail = user.AdminEmail;
     if (validate()) {
-      props.create({name,user,newAdminEmail},onSuccess,props.url);
+      if(props.for==="Department") {
+        name= user.name;
+        const superAdminEmail = user.AdminEmail;
+        props.create({name,user,superAdminEmail},onSuccess,props.url);
+      }
+      else{
+
+        props.create({name,user,newAdminEmail},onSuccess,props.url);
+      }
     }
   };
   function selectExelFile(e) {

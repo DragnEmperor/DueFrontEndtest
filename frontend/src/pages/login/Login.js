@@ -114,84 +114,10 @@ function Login(props) {
             centered
           >
             <Tab label="Login" classes={{ root: classes.tab }} />
-            <Tab label="New User" classes={{ root: classes.tab }} />
           </Tabs>
 
           {activeTabId === 0 && (
             <React.Fragment>
-
-                {errorMessage && (
-                  <Fade in={true}>
-                    <Typography color="secondary" className={classes.errorMessage}>
-                      {errorMessage}
-                    </Typography>
-                  </Fade>
-                )}
-
-                <TextField
-                  id="email"
-                  InputProps={{
-                    classes: {
-                      underline: classes.textFieldUnderline,
-                      input: classes.textField,
-                    },
-                  }}
-                  value={emailValue}
-                  onChange={e => setEmailValue(e.target.value)}
-                  margin="normal"
-                  label="Email"
-                  placeholder="Email"
-                  type="email"
-                  fullWidth
-                />
-                <TextField
-                  id="password"
-                  InputProps={{
-                    classes: {
-                      underline: classes.textFieldUnderline,
-                      input: classes.textField,
-                    },
-                  }}
-                  value={passwordValue}
-                  onChange={e => setPasswordValue(e.target.value)}
-                  margin="normal"
-                  label="Password"
-                  placeholder="Password"
-                  type="password"
-                  fullWidth
-                />
-                <div className={classes.formButtons}>
-                  {isLoading ? (
-                    <CircularProgress size={26} className={classes.loginLoader} />
-                  ) : (
-
-                    <Button
-                      disabled={
-                        emailValue.length === 0 || passwordValue.length === 0
-                      }
-                      onClick={handleLogin}
-                      variant="contained"
-                      color="primary"
-                      size="large"
-                    >
-                      Login
-                    </Button>
-
-                  )}
-                  <Button
-                    color="primary"
-                    size="large"
-                    className={classes.forgetButton}
-                  >
-                    Forget Password
-                  </Button>
-                </div>
-
-                <div className={classes.formDividerContainer}>
-                  <div className={classes.formDivider} />
-                  <Typography className={classes.formDividerWord}>or</Typography>
-                  <div className={classes.formDivider} />
-                </div>
                 
                 <Button size="large" className={classes.googleButton} onClick={()=>{
                   setaccessBackend(true); 
@@ -204,88 +130,6 @@ function Login(props) {
           )}
           {activeTabId === 1 && (
             <React.Fragment>
-              
-              {errorMessage && (
-                <Fade in={true}>
-                  <Typography color="secondary" className={classes.errorMessage}>
-                    {errorMessage}
-                  </Typography>
-                </Fade>
-              )}
-              <TextField
-                id="name"
-                InputProps={{
-                  classes: {
-                    underline: classes.textFieldUnderline,
-                    input: classes.textField,
-                  },
-                }}
-                value={nameValue}
-                onChange={e => setNameValue(e.target.value)}
-                margin="normal"
-                label="Name"
-                placeholder="Name"
-                type="text"
-                fullWidth
-              />
-              <TextField
-                id="email"
-                InputProps={{
-                  classes: {
-                    underline: classes.textFieldUnderline,
-                    input: classes.textField,
-                  },
-                }}
-                value={emailValue}
-                onChange={e => setEmailValue(e.target.value)}
-                margin="normal"
-                label="Email"
-                placeholder="Email"
-                type="email"
-                fullWidth
-              />
-              <TextField
-                id="password"
-                InputProps={{
-                  classes: {
-                    underline: classes.textFieldUnderline,
-                    input: classes.textField,
-                  },
-                }}
-                value={passwordValue}
-                onChange={e => setPasswordValue(e.target.value)}
-                margin="normal"
-                label="Password"
-                placeholder="Password"
-                type="password"
-                fullWidth
-              />
-              <div className={classes.creatingButtonContainer}>
-                {isLoading ? (
-                  <CircularProgress size={26} />
-                ) : (
-                  <Button
-                    onClick={handleRegister}
-                    disabled={
-                      emailValue.length === 0 ||
-                      passwordValue.length === 0 ||
-                      nameValue.length === 0
-                    }
-                    size="large"
-                    variant="contained"
-                    color="primary"
-                    fullWidth
-                    className={classes.createAccountButton}
-                  >
-                    Create your account
-                  </Button>
-                )}
-              </div>
-              <div className={classes.formDividerContainer}>
-                <div className={classes.formDivider} />
-                <Typography className={classes.formDividerWord}>or</Typography>
-                <div className={classes.formDivider} />
-              </div>
               <Button
                 size="large"
                 className={classnames(

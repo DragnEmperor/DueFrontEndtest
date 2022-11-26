@@ -18,7 +18,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 const initialFormState = {
-  id: null,
+  amount: 0,
   name: "",
   rollNumber: "",
 };
@@ -47,7 +47,15 @@ const FormDialogAddUser = props => {
     let tempErrors = {};
     let formIsValid = true;
     if(file && file.name==""){
-
+      var regex=/^[0-9]+$/;
+      if ( user.amount < 0 ) {
+        formIsValid = false;
+        tempErrors["amount"] = "Cannot be negative";
+      }
+      if(!user.amount.match(regex)){
+        formIsValid = false;
+        tempErrors["amount"] = "Can only be number";
+      }
     
     if (!user.name || user.name.trim() === "") {
       formIsValid = false;
@@ -79,11 +87,12 @@ else{
     e.preventDefault();
     const department=JSON.parse(localStorage.getItem('setDueDepartment'));
     const rollNumber = user.rollNumber;
-    const hasDue = true;
+    const hasDue = "true";
+    const amount = user.amount;
     if (validate()) {
         if(file && file.name==""){
 
-            props.create({department,user,rollNumber,hasDue},onSuccess,props.url);
+            props.create({department,user,rollNumber,hasDue,amount},onSuccess,props.url);
         }
         else{
             const form = new FormData();
@@ -132,21 +141,13 @@ else{
           id="form-dialog-title"
           style={{ padding: "30px 30px 0px 30px" }}
         >
-          {props.for==="Department" && "Add Department Details"}
+ 
           {props.for==="Student" && "Add Student Details"}
-          {props.for==="SubAdmin" && "Add SubAdmin Details"}
+
         </DialogTitle>
 
         <DialogContent style={{ padding: "30px 30px 10px 30px" }}>
-          <TextField
-            autoFocus
-            name="id"
-            label="Id"
-            value={user.id}
-            fullWidth
-            onChange={handleInputChange}
-            {...(errors.name && { error: true, helperText: errors.name })}
-          />
+         
 
           <br />
           <br />
@@ -171,6 +172,18 @@ else{
             fullWidth
             onChange={handleInputChange}
             {...(errors.rollNumber && { error: true, helperText: errors.rollNumber })}
+          />
+                <br />
+          <br />
+
+           <TextField
+            autoFocus
+            name="amount"
+            label="Amount"
+            value={user.amount}
+            fullWidth
+            onChange={handleInputChange}
+            {...(errors.amount && { error: true, helperText: errors.amount })}
           />
            {props.for==="Student" && <div style={{marginTop: "1.2rem", display:"flex", flexDirection:"column", alignItems: "center"}}>
 <p style={{marginBottom: "1.2rem",}}>OR</p>

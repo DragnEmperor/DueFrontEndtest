@@ -37,7 +37,7 @@ const FormDialogSelectDepartment =({ classes, ...props }) => {
 
    const handleDept=(value)=>{
     localStorage.setItem('setDueDepartment',JSON.stringify(value))
-    props.history.replace('/admin/subadmins')
+    props.history.goBack();
    }
 
   const columns = [

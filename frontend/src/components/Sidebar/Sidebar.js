@@ -31,7 +31,7 @@ const structure = [
   // { id: 5, label: "Super Admin", link: "/admin/superadmin", icon: <AccountIcon /> },
   { id: 2, label: "Sub Admins", link: "/admin/subadmins", icon: <AccountIcon /> },
   { id: 3, label: "Due List", link: "/admin/duelist", icon: <AccountIcon /> },
-  { id: 4, label: "Due Bin", link: "/admin/duebin", icon: <AccountIcon /> },
+  // { id: 4, label: "Due Bin", link: "/admin/duebin", icon: <AccountIcon /> },
   // { id: 2, label: "User (context)", link: "/admin/usercontext", icon: <AccountIcon /> },
   // { id: 3, label: "Map (redux)", link: "/admin/map", icon: <PublicIcon /> },
   // { id: 4, type: "divider" },

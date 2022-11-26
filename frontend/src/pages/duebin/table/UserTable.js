@@ -3,9 +3,9 @@ import { Paper, withStyles } from '@material-ui/core';
 import MUIDataTable from "mui-datatables";
 import { connect } from "react-redux";
 import * as actions from "../../../actions/user";
-import FormDialogAddUser from "../formDialog/FormDialogAddUser";
-import FormDialogEditUser from "../formDialog/FormDialogEditUser";
-import FormDialogDeleteUser from "../formDialog/FormDialogDeleteUser";
+import FormDialogAddUser from "../../../components/formDialog/FormDialogAddUser";
+import FormDialogEditUser from "../../../components/formDialog/FormDialogEditUser";
+import FormDialogDeleteUser from "../../../components/formDialog/FormDialogDeleteUser";
 
 const styles = theme => ({
     paperTable: {

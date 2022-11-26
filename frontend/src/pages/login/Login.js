@@ -1,13 +1,13 @@
 import React, { useState, useContext,useEffect } from "react";
 import {
   Grid,
-  CircularProgress,
+  // CircularProgress,
   Typography,
   Button,
   Tabs,
   Tab,
-  TextField,
-  Fade,
+  // TextField,
+  // Fade,
 } from "@material-ui/core";
 import { withRouter } from "react-router-dom";
 import classnames from "classnames";
@@ -22,7 +22,7 @@ import google from "../../images/google.svg";
 // import { useUserDispatch, loginUser, registerUser } from "../../context/AuthContext";
 import { AuthContext } from "../../context/AuthContext";
 import axios from "axios";
-import { ContactSupport } from "@material-ui/icons";
+// import { ContactSupport } from "@material-ui/icons";
 
 function Login(props) {
 
@@ -34,9 +34,6 @@ function Login(props) {
   var [isLoading, setIsLoading] = useState(false);
   var [errorMessage, setErrorMessage] = useState(null);
   var [activeTabId, setActiveTabId] = useState(0);
-  var [nameValue, setNameValue] = useState("");
-  var [emailValue, setEmailValue] = useState("");
-  var [passwordValue, setPasswordValue] = useState("");
   var [profileValue, setProfileValue] = useState("");
   var [accessBackend, setaccessBackend] = useState(false);
 
@@ -77,7 +74,6 @@ function Login(props) {
 
   const handleLogin = () => {
     if(profileValue){
-      console.log(profileValue)
       if(profileValue.isGodLevelAdmin || profileValue.subAdminRightsOf.length!=0 || profileValue.superAdminRightsOf.length!=0){
         login(profileValue.email,profileValue,props.history,setIsLoading,setErrorMessage);
       }
@@ -85,17 +81,6 @@ function Login(props) {
         props.history.push('/noaccount')
       }
     }
-  }
-
-  const handleRegister = () => {
-    register(
-      emailValue,
-      nameValue,
-      passwordValue,
-      props.history,
-      setIsLoading,
-      setErrorMessage,
-    )
   }
 
   return (
@@ -118,13 +103,15 @@ function Login(props) {
 
           {activeTabId === 0 && (
             <React.Fragment>
-                
-                <Button size="large" className={classes.googleButton} onClick={()=>{
-                  setaccessBackend(true); 
-                  return window.open("http://localhost:5000/auth/google", "_self")}}>
+              <div styles={{paddingTop:"4rem"}}>
+                <Button size="large" className={classes.googleButton} onClick={() => {
+                  setaccessBackend(true);
+                  return window.open("http://localhost:5000/auth/google", "_self")
+                }}>
                   <img src={google} alt="google" className={classes.googleIcon} />
                   &nbsp;Sign in with Google
                 </Button>
+              </div>
 
             </React.Fragment>
           )}

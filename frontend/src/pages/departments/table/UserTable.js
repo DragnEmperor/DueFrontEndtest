@@ -136,7 +136,7 @@ const UserTable = ({ classes, ...props }) => {
                                 dataUser={tableMeta.rowData}
                                 delete={props.delete}
                                 refresh={refresh}
-                                url='department/revoke_super_admin'
+                                url='department/delete'
                                 isGodLevel={true}
                             />
                         </div>

@@ -32,7 +32,6 @@ export const Pagination = (page = 1, limit = 10,url, name = "", email = "") => d
     //     .catch(err => console.log(err))
     API.user(url).fetchAll()
         .then(res =>{
-            console.log("fetched : ",res)
             dispatch({
                 type: ACTION_TYPES.USER_FETCH_ALL,
                 payload:  res.data.list

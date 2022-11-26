@@ -4,7 +4,7 @@ import MUIDataTable from "mui-datatables";
 import { connect } from "react-redux";
 import * as actions from "../../../actions/user";
 import FormDialogAddUser from "../../../components/formDialog/FormDialogAddUser";
-import FormDialogEditUser from "../../../components/formDialog/FormDialogEditUser";
+// import FormDialogEditUser from "../../../components/formDialog/FormDialogEditUser";
 import FormDialogDeleteUser from "../../../components/formDialog/FormDialogDeleteUser";
 // import FormDialogActivateDeactivateUser from "../../../components/formDialog/FormDialogActivateDeactivateDepartment";
 import FormDialogSelectButton from "../../../components/formDialog/FormDialogSelectButton";
@@ -30,7 +30,7 @@ const UserTable = ({ classes, ...props }) => {
     useEffect(() => {
         const getName=JSON.parse(localStorage.getItem('setDueDepartment'))
         if(!getName)
-        props.history.replace('/admin/setdepartment/')
+        props.history.push('/admin/setdepartment/')
         setDeptName(getName)
     }, [])
 
@@ -128,7 +128,7 @@ const UserTable = ({ classes, ...props }) => {
                                     for="SubAdmin"
                                 />
                                 <div>
-                                <FormDialogSelectButton btnText='Change Department' handleDept={()=>props.history.replace('/admin/setdepartment/')}/>
+                                <FormDialogSelectButton btnText='Change Department' handleDept={()=>props.history.push('/admin/setdepartment/')}/>
                                 </div>
                             </div>
                         </th>
@@ -143,7 +143,7 @@ const UserTable = ({ classes, ...props }) => {
                                 dataUser={tableMeta.rowData}
                                 delete={props.delete}
                                 refresh={refresh}
-                                url='superadmin/revoke_student_due'
+                                url='superadmin/revoke_sub_admin'
                                 isGodLevel={false}
                             />
                         </div>

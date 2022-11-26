@@ -60,6 +60,9 @@ const FormDialogAddUser = props => {
     }
 
 }
+else{
+  
+}
     setErrors(tempErrors);
     return formIsValid;
   };
@@ -109,7 +112,7 @@ const FormDialogAddUser = props => {
       selectFile(e.target.files[0]);
     }
     else{
-      selectFile(null);
+      selectFile({name:""});
       toast.error("File type not supported select excel sheet only");
     }
     // selectFile(e.target.files[0]);

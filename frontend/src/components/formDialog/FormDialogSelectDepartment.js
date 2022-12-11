@@ -20,7 +20,7 @@ const FormDialogSelectDepartment =({ classes, ...props }) => {
    }, [])
      
    const fetchData=()=>{
-    axios.get('http://localhost:5000/superadmin/list_super',{withCredentials:true})
+    axios.get(process.env.REACT_APP_BACKEND_URL+'/superadmin/list_super',{withCredentials:true})
     .then(res=>{
         console.log(res.data)
         let newList=[]

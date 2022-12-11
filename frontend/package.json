@@ -50,6 +50,7 @@
     ]
   },
   "devDependencies": {
+    "dotenv": "^16.0.3",
     "prettier": "^1.19.1"
   }
 }

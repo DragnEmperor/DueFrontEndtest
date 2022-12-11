@@ -15,6 +15,7 @@ import { store } from "./store/store";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import NoAccount from './pages/noaccount/noaccount'
+require('dotenv').config()
 
 export default function App() {
   // global

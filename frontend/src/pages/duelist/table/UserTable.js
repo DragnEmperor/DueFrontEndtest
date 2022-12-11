@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 import * as actions from "../../../actions/user";
 import FormDialogAddUser from "../../../components/formDialog/FormAddStudent";
 import FormDialogEditUser from "../../../components/formDialog/FormDialogEditStudent";
-import FormDialogDeleteUser from "../../../components/formDialog/FormDialogDeleteUser";
+import FormDialogDeleteStudent from "../../../components/formDialog/FormDialogDeleteStudent";
 import FormDialogSelectButton from "../../../components/formDialog/FormDialogSelectButton";
 
 const styles = theme => ({
@@ -16,7 +16,7 @@ const styles = theme => ({
 
 const UserTable = ({ classes, ...props }) => {
     const [page, setPage] = useState(0)
-    const [rowsPerPage, setRowsPerPage] = useState(5)
+    const [rowsPerPage, setRowsPerPage] = useState(100)
     const [deptName,setDeptName]=useState("")
 
     useEffect(() => {
@@ -31,6 +31,7 @@ const UserTable = ({ classes, ...props }) => {
         if(!getName)
         props.history.push('/admin/setdepartment/')
         setDeptName(getName)
+        console.log(process.env.REACT_APP_BACKEND_URL+"/due/uploadfile")
     }, [])
 
     const handleChangePage = async (newPage) => {
@@ -142,12 +143,12 @@ const UserTable = ({ classes, ...props }) => {
                                 url='due/set_due_amount'
                                 refresh={refresh}
                             />
-                            <FormDialogDeleteUser 
+                            <FormDialogDeleteStudent
                                 dataUser={tableMeta.rowData}
                                 delete={props.delete}
                                 refresh={refresh}
                                 isGodLevel={false}
-                                url='students/delete'
+                                url='due/remove_single_student'
                             />
                         </div>
                     );

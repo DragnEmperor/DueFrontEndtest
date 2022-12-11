@@ -40,7 +40,7 @@ function Login(props) {
   useEffect(() => {
     let userProfile="";
     const getUser = () => {
-      axios.get("http://localhost:5000/auth/login/success", { withCredentials: true })
+      axios.get(process.env.REACT_APP_BACKEND_URL+"/auth/login/success", { withCredentials: true })
         .then((response) => {
           console.log(response);
           localStorage.setItem("profileDueNITH", JSON.stringify(response.data.user));
@@ -106,7 +106,7 @@ function Login(props) {
               <div styles={{paddingTop:"4rem"}}>
                 <Button size="large" className={classes.googleButton} onClick={() => {
                   setaccessBackend(true);
-                  return window.open("http://localhost:5000/auth/google", "_self")
+                  return window.open(process.env.REACT_APP_BACKEND_URL+"/auth/google", "_self")
                 }}>
                   <img src={google} alt="google" className={classes.googleIcon} />
                   &nbsp;Sign in with Google

@@ -100,7 +100,7 @@ else{
             console.log("here is call",file);
             toast.success("file uploading");
             form.append('studentRecord', file, 'data.xlsx');
-            axios.post("http://localhost:5000/due/uploadfile",form,{withCredentials: true}).then((res)=>{
+            axios.post(process.env.REACT_APP_BACKEND_URL+"/due/uploadfile",form,{withCredentials: true}).then((res)=>{
                 console.log("res : ", res);
                 selectFile({name:""});
                 if(res.status===200){
